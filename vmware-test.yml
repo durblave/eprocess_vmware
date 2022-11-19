@@ -1,0 +1,49 @@
+---
+- name: VMWare tasks
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  # vars:
+  #   vcenter_ip: 'VCENTERIP'
+  #   vcenter_user: 'VCENTERUSER'
+  #   vcenter_password: 'VCENTERPASS'
+  #   vmname: 'VMNAME'
+   tasks:
+      - name: Get datastore_url from given VM name
+        block:
+          - name: Get virtual machine info
+            community.vmware.vmware_vm_info:
+              hostname: '{{ vcenter_hostname }}'
+              username: '{{ vcenter_username }}'
+              password: '{{ vcenter_password }}'
+            delegate_to: localhost
+            register: vm_info
+
+          - debug:
+              msg: "{{ item.datastore_url }}"
+            with_items:
+              - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
+            vars:
+              query: "[?guest_name=='AAP2-EE']"
+  #   - name: Wait for the virtual machine to shutdown
+  #     vmware_guest_powerstate:
+  #       # hostname: "{{ vcenter_ip }}"
+  #       # username: "{{ vcenter_user }}"
+  #       # password: "{{ vcenter_password }}"
+  #       name: "{{ vmname }}"
+  #       validate_certs: False
+  #       state: shutdown-guest
+  #       state_change_timeout: 900
+  #     register: wait
+  #     ignore_errors: yes
+
+  #   - name: ForcePoweroff
+  #     vmware_guest_powerstate:
+  #       hostname: "{{ vcenter_ip }}"
+  #       username: "{{ vcenter_user }}"
+  #       password: "{{ vcenter_password }}"
+  #       name: "{{ vmname }}"
+  #       validate_certs: False
+  #       state: powered-off
+  #     register: poweroff
+  #     when: wait.msg is search('Timeout')
