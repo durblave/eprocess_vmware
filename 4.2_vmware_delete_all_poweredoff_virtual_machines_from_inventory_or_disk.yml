@@ -21,7 +21,8 @@
 
         - name: Deleting all poweredoff virtual machines from inventory and disk
           community.vmware.vmware_guest:
-            name: "{{ item.uuid }}"
+            uuid: "{{ item.uuid }}"
+            #name: "{{ item.uuid }}"
             delete_from_inventory: True
             state: absent
           with_items:
