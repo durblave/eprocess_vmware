@@ -20,7 +20,7 @@
           register: vm_info
 
         - debug:
-            msg: "{{ item }}"
+            msg: "{{ item.guest_name }}"
             #msg: "{{ item.datastore_url}}"
           with_items:
             - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
