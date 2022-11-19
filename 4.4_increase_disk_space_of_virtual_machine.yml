@@ -24,7 +24,7 @@
             query: "[?guest_name=='{{ vm_name }}']"
           register: guest_info
   
-        - name: add disk to virtual machine
+        - name: increasing virtual machine disk
           vmware_guest_disk:
             datacenter: "{{ item.datacenter }}"  #"{{ vcenter_datacenter }}"
             name: "{{ item.guest_name }}" #"{{ vm_name }}"
