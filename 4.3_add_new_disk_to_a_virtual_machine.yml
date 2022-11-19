@@ -27,7 +27,7 @@
 
         - debug: 
             msg: "guest exists"
-          when: guest_info.results != None
+          when: guest_info.results not null
 
         # - name: Set gather_facts
         #   set_fact:
