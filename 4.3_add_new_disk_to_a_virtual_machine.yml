@@ -48,8 +48,8 @@
             disk:
               - size_gb: 1 #"{{ vm_disk_size_gb }}"
                 datastore: "{{ item.datastore }}"
-                #type: thin #"{{ vm_disk_type }}"
-                #datastore: "corro-datastore1" #"{{ item.datastore }}" #"{{ vm_disk_datastore }}"
+                type: thick #"{{ vm_disk_type }}"
+                datastore: "corro-datastore2" #"{{ item.datastore }}" #"{{ vm_disk_datastore }}"
                 scsi_controller: 0 #"{{ vm_disk_scsi_controller }}"
                 scsi_type: paravirtual #"{{ vm_disk_scsi_type }}"
                 unit_number: 1 #"{{ vm_disk_scsi_unit }}"                
