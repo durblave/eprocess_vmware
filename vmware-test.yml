@@ -27,6 +27,11 @@
           vars:
             #query: "[?guest_name=='AAP2-EE']"
             query: "[?power_state=='poweredOff']"
+          register: result
+
+        - name: debug result
+          debug:
+            var: result
 
 
   #   - name: Wait for the virtual machine to shutdown
