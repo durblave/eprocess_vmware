@@ -19,7 +19,7 @@
           with_items:
             - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
           vars:
-            query: "[?guest_name=='Unifi Wifi Controller 7.122']"
+            query: "[?guest_name=='Unifi Wifi Controller 7.1']"
           register: guest_info
 
         - debug:
