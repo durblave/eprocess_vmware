@@ -20,7 +20,7 @@
           register: vm_info
 
         - debug:
-            msg: "{{ item.datastore_url }}"
+            msg: "{{ item.datastore_url.url }}"
           with_items:
             - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
           vars:
