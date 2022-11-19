@@ -1,0 +1,53 @@
+---
+- name: 4.2 - delete all powered off virtual machines from inventory and disk
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  tasks:
+    - name: Deleting poweredoff virtual machines
+      block:
+        - name: Getting state of all virtual machines
+          community.vmware.vmware_vm_info:
+          delegate_to: localhost
+          register: vm_info
+
+        - name: Set gather_facts
+          vm_info: vm
+          with_items:
+            - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
+          vars:
+            query: "[?guest_name=='Unifi Wifi Controller 7.1']"
+          register: vm_exist
+
+        - debug:
+          var: vm
+
+        - debug:
+          var: vm_exist          
+        # - name: add disk to virtual machine
+        #   vmware_guest_disk:
+        #     validate_certs: "{{ vcenter_validate_certs }}"
+        #     datacenter: "{{ vcenter_datacenter }}"
+        #     name: "{{ vm_name }}"
+        #     disk:
+        #       - size_gb: "{{ vm_disk_size_gb }}"
+        #         type: "{{ vm_disk_type }}"
+        #         datastore: "{{ vm_disk_datastore }}"
+        #         state: present
+        #         scsi_controller: "{{ vm_disk_scsi_controller }}"
+        #         unit_number: "{{ vm_disk_scsi_unit }}"
+        #         scsi_type: "{{ vm_disk_scsi_type }}"
+        #         disk_mode: "{{ vm_disk_mode }}"
+
+
+        # - name: Deleting all poweredoff virtual machines from inventory and disk
+        #   community.vmware.vmware_guest:
+        #     uuid: "{{ item.uuid }}"
+        #     delete_from_inventory: True
+        #     state: absent
+        #   with_items:
+        #     - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
+        #   vars:
+        #     query: "[?guest_name=='Unifi Wifi Controller Server']"
+        #   register: result
