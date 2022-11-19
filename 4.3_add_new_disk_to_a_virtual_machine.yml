@@ -21,9 +21,13 @@
           vars:
             query: "[?guest_name=='Unifi Wifi Controller 7.122']"
           register: guest_info
-          
+
         - debug:
             var: guest_info
+
+        - debug: 
+            msg: "guest exists"
+          when: guest_info.results is defined
 
         # - name: Set gather_facts
         #   set_fact:
