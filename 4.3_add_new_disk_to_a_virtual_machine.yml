@@ -1,5 +1,5 @@
 ---
-- name: 4.2 - delete all powered off virtual machines from inventory and disk
+- name: 4.3_add_new_disk_to_a_virtual_machine
   hosts: localhost
   connection: local
   gather_facts: no
