@@ -24,7 +24,8 @@
           with_items:
             - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
           vars:
-            query: "[?guest_name=='AAP2-EE']"
+            #query: "[?guest_name=='AAP2-EE']"
+            query: "[?power_state=='poweredOff']"
 
 
   #   - name: Wait for the virtual machine to shutdown
