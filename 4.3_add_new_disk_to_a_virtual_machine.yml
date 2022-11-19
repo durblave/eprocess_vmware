@@ -14,7 +14,7 @@
           delegate_to: localhost
           register: vm_info
 
-        - name: Gather info from standalone ESXi server having datacenter as 'ha-datacenter'
+        - name: Gather vm info
           community.vmware.vmware_guest_info:
             datacenter: "{{ item.datacenter }}"
             uuid: "{{ item.uuid }}"
@@ -47,7 +47,7 @@
         #     var: vm_exist          
         - name: add disk to virtual machine
           vmware_guest_disk:
-            validate_certs: "{{ vcenter_validate_certs }}"
+            #validate_certs: "{{ vcenter_validate_certs }}"
             datacenter: "{{ item.datacenter }}"  #"{{ vcenter_datacenter }}"
             name: "{{ item.guest_name }}" #"{{ vm_name }}"
             disk:
@@ -64,8 +64,6 @@
           vars:
             query: "[?guest_name=='{{ vm_name }}']"                
           register: vm_add_disk
-
-
 
         # - name: Deleting all poweredoff virtual machines from inventory and disk
         #   community.vmware.vmware_guest:
