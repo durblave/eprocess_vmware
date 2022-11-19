@@ -27,7 +27,6 @@
         - name: Connect to VMWare and shutdown guest
           community.vmware.vmware_guest:
             datacenter: "{{ item.datacenter }}"
-            #validate_certs: no
             name: "{{ item.guest_name }}"
             state: shutdownguest
           failed_when: vm_shutdown.instance.hw_power_status != 'poweredOff' and vm_shutdown.changed == false
@@ -50,10 +49,10 @@
                 datastore: "{{ item.datastore }}"
                 type: thick #"{{ vm_disk_type }}"
                 datastore: "corro-datastore2" #"{{ item.datastore }}" #"{{ vm_disk_datastore }}"
-                scsi_controller: 0 #"{{ vm_disk_scsi_controller }}"
+                scsi_controller: 1 #"{{ vm_disk_scsi_controller }}"
                 scsi_type: paravirtual #"{{ vm_disk_scsi_type }}"
                 unit_number: 1 #"{{ vm_disk_scsi_unit }}"                
-                #disk_mode: persistent #"{{ vm_disk_mode }}"
+                disk_mode: persistent #"{{ vm_disk_mode }}"
                 state: present
           with_items:
             - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
