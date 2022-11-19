@@ -13,7 +13,8 @@
           register: vm_info
 
         - name: Set gather_facts
-          vm_info: vm
+          set_fact:
+            vm_info: "{{ item }}"
           with_items:
             - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
           vars:
@@ -21,10 +22,10 @@
           register: vm_exist
 
         - debug:
-          var: vm
+            var: vm_info
 
         - debug:
-          var: vm_exist          
+            var: vm_exist          
         # - name: add disk to virtual machine
         #   vmware_guest_disk:
         #     validate_certs: "{{ vcenter_validate_certs }}"
