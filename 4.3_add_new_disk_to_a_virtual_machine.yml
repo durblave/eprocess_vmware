@@ -12,20 +12,33 @@
           delegate_to: localhost
           register: vm_info
 
-        - name: Set gather_facts
-          set_fact:
-            vm_info: "{{ item }}"
+        - name: Gather info from standalone ESXi server having datacenter as 'ha-datacenter'
+          community.vmware.vmware_guest_info:
+            datacenter: "{{ item.datacenter }}"
+            uuid: "{{ item.uuid }}"
           with_items:
             - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
           vars:
             query: "[?guest_name=='Unifi Wifi Controller 7.122']"
-          register: vm_exist
-
+          register: guest_info
+          
         - debug:
-            var: vm_info
+            var: guest_info
 
-        - debug:
-            var: vm_exist          
+        # - name: Set gather_facts
+        #   set_fact:
+        #     vm_info: "{{ item }}"
+        #   with_items:
+        #     - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
+        #   vars:
+        #     query: "[?guest_name=='Unifi Wifi Controller 7.122']"
+        #   register: vm_exist
+
+        # - debug:
+        #     var: vm_info
+
+        # - debug:
+        #     var: vm_exist          
         # - name: add disk to virtual machine
         #   vmware_guest_disk:
         #     validate_certs: "{{ vcenter_validate_certs }}"
