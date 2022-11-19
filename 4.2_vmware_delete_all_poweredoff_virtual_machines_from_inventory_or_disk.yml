@@ -1,0 +1,60 @@
+---
+- name: 4.2 - delete all powered off virtual machines from inventory and disk
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  tasks:
+    - name: Deleting poweredoff virtual machines
+      block:
+        - name: Getting state of all virtual machines
+          community.vmware.vmware_vm_info:
+          delegate_to: localhost
+          register: vm_info
+
+        # - set_fact:
+        #   poweredoff_vm_list: "{{ item.guest_name }}"
+        #   with_items:
+        #     - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
+        #   vars:
+        #     query: "[?power_state=='poweredOff']"                  
+
+        - name: Deleting all poweredoff virtual machines from inventory and disk
+          community.vmware.vmware_guest:
+            name: "{{ item.uuid }}"
+            delete_from_inventory: True
+            state: absent
+          with_items:
+            - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
+          vars:
+            query: "[?guest_name=='Unifi Wifi Controller Server']"
+            #query: "[?power_state=='poweredOff']"
+          register: result
+
+        # - name: debug result
+        #   debug:
+        #     var: result
+
+
+  #   - name: Wait for the virtual machine to shutdown
+  #     vmware_guest_powerstate:
+  #       # hostname: "{{ vcenter_ip }}"
+  #       # username: "{{ vcenter_user }}"
+  #       # password: "{{ vcenter_password }}"
+  #       name: "{{ vmname }}"
+  #       validate_certs: False
+  #       state: shutdown-guest
+  #       state_change_timeout: 900
+  #     register: wait
+  #     ignore_errors: yes
+
+  #   - name: ForcePoweroff
+  #     vmware_guest_powerstate:
+  #       hostname: "{{ vcenter_ip }}"
+  #       username: "{{ vcenter_user }}"
+  #       password: "{{ vcenter_password }}"
+  #       name: "{{ vmname }}"
+  #       validate_certs: False
+  #       state: powered-off
+  #     register: poweroff
+  #     when: wait.msg is search('Timeout')
