@@ -23,37 +23,19 @@
           vars:
             query: "[?guest_name=='{{ vm_name }}']"
           register: guest_info
-        
-        - name: Connect to VMWare and shutdown guest
-          community.vmware.vmware_guest:
-            datacenter: "{{ item.datacenter }}"
-            #validate_certs: no
-            name: "{{ item.guest_name }}"
-            state: shutdownguest
-          failed_when: vm_shutdown.instance.hw_power_status != 'poweredOff' and vm_shutdown.changed == false
-          register: vm_shutdown
-          with_items:
-            - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
-          vars:
-            query: "[?guest_name=='{{ vm_name }}']"
-
-        - name: Wait 15 seconds
-          ansible.builtin.pause:
-            seconds: 15
-
+  
         - name: add disk to virtual machine
           vmware_guest_disk:
             datacenter: "{{ item.datacenter }}"  #"{{ vcenter_datacenter }}"
             name: "{{ item.guest_name }}" #"{{ vm_name }}"
             disk:
-              - size_gb: 1 #"{{ vm_disk_size_gb }}"
-                datastore: "{{ item.datastore }}"
-                #type: thin #"{{ vm_disk_type }}"
-                #datastore: "corro-datastore1" #"{{ item.datastore }}" #"{{ vm_disk_datastore }}"
-                scsi_controller: 0 #"{{ vm_disk_scsi_controller }}"
+              - size_gb: 5 #"{{ vm_disk_size_gb }}"
+                type: thin #"{{ vm_disk_type }}"
+                datastore: "corro-datastore1" #"{{ item.datastore }}" #"{{ vm_disk_datastore }}"
+                scsi_controller: 1 #"{{ vm_disk_scsi_controller }}"
+                unit_number: 1 #"{{ vm_disk_scsi_unit }}"
                 scsi_type: paravirtual #"{{ vm_disk_scsi_type }}"
-                unit_number: 1 #"{{ vm_disk_scsi_unit }}"                
-                #disk_mode: persistent #"{{ vm_disk_mode }}"
+                disk_mode: persistent #"{{ vm_disk_mode }}"
                 state: present
           with_items:
             - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
