@@ -27,7 +27,7 @@
             query: "[?guest_name=='{{ vm_name }}']"
           #failed_when: vm_exists.instance.hw_name == "{{ vm_name }}"
           register: vm_exists
-          ignore_errors: yes
+          #ignore_errors: yes
   
         - name: Checking if virtual machine name exists in the environment
           debug:
