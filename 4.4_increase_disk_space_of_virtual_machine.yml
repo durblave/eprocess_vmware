@@ -1,5 +1,5 @@
 ---
-- name: 4.3_add_new_disk_to_a_virtual_machine
+- name: 4.4_increase disk space of virtual machine
   hosts: localhost
   connection: local
   gather_facts: no
