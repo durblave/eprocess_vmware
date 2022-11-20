@@ -24,13 +24,16 @@
             - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
           vars:
             query: "[?guest_name=='{{ vm_name }}']"
-          #failed_when: vm_exists.instance.hw_name == "{{ vm_name }}"
+          failed_when: vm_exists.instance.hw_name == "{{ vm_name }}"
           register: vm_exists
+          ignore_errors: yes
   
         - name: vm_exists
           debug:
-            var: vm_exists
+            msg: "Virtual machine {{ vm_name }} already exists with uuid {{ vm_exists.results[0].instance.hw_product_uuid }}"
+            #var: vm_exists
           when: vm_exists.results[0].instance.hw_name == "{{ vm_name }}"
+          #failed_when: vm_exists.results[0].instance.hw_name == "{{ vm_name }}"
 
         # - name: Create a VM from a template
         #   hosts: localhost
