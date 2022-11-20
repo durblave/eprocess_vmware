@@ -1,5 +1,5 @@
 ---
-- name: 4.4_increase disk space of virtual machine
+- name: 4.8_create a snapshot from a virtual machine
   hosts: localhost
   connection: local
   gather_facts: no
@@ -7,7 +7,7 @@
     vm_name: "Unifi Wifi Controller 7.1"
 
   tasks:
-    - name: Adding new disk 
+    - name: creating vm snapshot
       block:
         - name: Getting state of all virtual machines
           community.vmware.vmware_vm_info:
@@ -40,19 +40,14 @@
           ansible.builtin.pause:
             seconds: 15
 
-        - name: increasing virtual machine disk
-          vmware_guest_disk:
-            datacenter: "{{ item.datacenter }}"  #"{{ vcenter_datacenter }}"
-            name: "{{ item.guest_name }}" #"{{ vm_name }}"
-            disk:
-              - size_gb: 2 #"{{ vm_disk_size_gb }}"
-                scsi_controller: 1 #"{{ vm_disk_scsi_controller }}"
-                scsi_type: paravirtual #"{{ vm_disk_scsi_type }}"
-                unit_number: 1 #"{{ vm_disk_scsi_unit }}"                
-                state: present                
-                #disk_mode: persistent #"{{ vm_disk_mode }}"
-                #type: thick #"{{ vm_disk_type }}"
-                #datastore: "corro-datastore2" #"{{ item.datastore }}" #"{{ vm_disk_datastore }}"
+        - name: creating virtual machine snapshot
+          vmware_guest_snapshot:
+            datacenter: "{{ item.datacenter }}"
+            name: "{{ item.guest_name }}"
+            state: present
+            snapshot_name: "Ansible Managed Snapshot"
+            folder: "{{ item.folder }}"
+            description: "This snapshot is created by ansible"
           with_items:
             - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
           vars:
