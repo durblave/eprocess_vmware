@@ -24,21 +24,21 @@
             query: "[?guest_name=='{{ vm_name }}']"
           register: guest_info
   
-        - name: Connect to VMWare and shutdown guest
-          community.vmware.vmware_guest:
-            datacenter: "{{ item.datacenter }}"
-            name: "{{ item.guest_name }}"
-            state: shutdownguest
-          failed_when: vm_shutdown.instance.hw_power_status != 'poweredOff' and vm_shutdown.changed == false
-          register: vm_shutdown
-          with_items:
-            - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
-          vars:
-            query: "[?guest_name=='{{ vm_name }}']"
+        # - name: Connect to VMWare and shutdown guest
+        #   community.vmware.vmware_guest:
+        #     datacenter: "{{ item.datacenter }}"
+        #     name: "{{ item.guest_name }}"
+        #     state: shutdownguest
+        #   failed_when: vm_shutdown.instance.hw_power_status != 'poweredOff' and vm_shutdown.changed == false
+        #   register: vm_shutdown
+        #   with_items:
+        #     - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
+        #   vars:
+        #     query: "[?guest_name=='{{ vm_name }}']"
 
-        - name: Wait 15 seconds
-          ansible.builtin.pause:
-            seconds: 15
+        # - name: Wait 15 seconds
+        #   ansible.builtin.pause:
+        #     seconds: 15
 
         - name: creating virtual machine snapshot
           vmware_guest_snapshot:
@@ -48,28 +48,29 @@
             snapshot_name: "Ansible Managed Snapshot"
             folder: "{{ item.folder }}"
             description: "This snapshot is created by ansible"
+            quiesce: true    
           with_items:
             - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
           vars:
             query: "[?guest_name=='{{ vm_name }}']"                
           register: vm_snapshot
 
-        - name: Wait 20 seconds
-          ansible.builtin.pause:
-            seconds: 20          
+        # - name: Wait 20 seconds
+        #   ansible.builtin.pause:
+        #     seconds: 20          
 
-        - name: Connect to VMWare and poweron guest
-          community.vmware.vmware_guest:
-            datacenter: "{{ item.datacenter }}"
-            name: "{{ item.guest_name }}"
-            state: poweredon
-          failed_when: vm_shutdown.instance.hw_power_status != 'poweredOn' and vm_shutdown.changed == false
-          register: vm_poweron
-          with_items:
-            - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
-          vars:
-            query: "[?guest_name=='{{ vm_name }}']"
+        # - name: Connect to VMWare and poweron guest
+        #   community.vmware.vmware_guest:
+        #     datacenter: "{{ item.datacenter }}"
+        #     name: "{{ item.guest_name }}"
+        #     state: poweredon
+        #   failed_when: vm_shutdown.instance.hw_power_status != 'poweredOn' and vm_shutdown.changed == false
+        #   register: vm_poweron
+        #   with_items:
+        #     - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
+        #   vars:
+        #     query: "[?guest_name=='{{ vm_name }}']"
 
-        - name: Wait 15 seconds
-          ansible.builtin.pause:
-            seconds: 15          
+        # - name: Wait 15 seconds
+        #   ansible.builtin.pause:
+        #     seconds: 15          

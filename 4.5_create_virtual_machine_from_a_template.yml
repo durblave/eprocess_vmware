@@ -24,6 +24,24 @@
             query: "[?guest_name=='{{ vm_name }}']"
           register: guest_info
   
+        - name: Create a VM from a template
+          hosts: localhost
+          connection: local
+          gather_facts: no
+          tasks:
+          - name: Creating virtual machine from a template
+            vmware_guest:
+              name: clone_test_vm_2
+              template: template_el7 #"{{ vm_template }}"
+              datacenter: "ha-datacenter" #"{{ vm_datacenter }}"
+              folder: /ha-datacenter/vm
+              state: poweredOff
+              #wait_for_ip_address: yes
+
+
+d
+
+
         - name: Connect to VMWare and shutdown guest
           community.vmware.vmware_guest:
             datacenter: "{{ item.datacenter }}"
@@ -50,6 +68,9 @@
                 scsi_type: paravirtual #"{{ vm_disk_scsi_type }}"
                 unit_number: 1 #"{{ vm_disk_scsi_unit }}"                
                 state: present                
+                #disk_mode: persistent #"{{ vm_disk_mode }}"
+                #type: thick #"{{ vm_disk_type }}"
+                #datastore: "corro-datastore2" #"{{ item.datastore }}" #"{{ vm_disk_datastore }}"
           with_items:
             - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
           vars:

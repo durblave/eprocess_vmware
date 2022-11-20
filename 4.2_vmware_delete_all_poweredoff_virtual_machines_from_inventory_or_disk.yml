@@ -20,5 +20,5 @@
           with_items:
             - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
           vars:
-            query: "[?guest_name=='Unifi Wifi Controller Server']"
+            query: "[?power_state=='poweredOff']"
           register: result
