@@ -1,5 +1,5 @@
 ---
-- name: 4.8_create a snapshot from a virtual machine
+- name: 4.7_restore_virtual_machine_from_a_snapshot
   hosts: localhost
   connection: local
   gather_facts: no
@@ -47,7 +47,7 @@
             datacenter: "{{ item.datacenter }}"
             name: "{{ item.guest_name }}"
             state: revert
-            snapshot_name: "Ansible Managed Snapshot"
+            snapshot_name: "Ansible Managed Snapshot - 1668982858"
             folder: "{{ item.folder }}"
           with_items:
             - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"

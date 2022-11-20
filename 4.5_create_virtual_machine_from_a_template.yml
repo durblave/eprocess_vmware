@@ -1,5 +1,5 @@
 ---
-- name: 4.4_increase disk space of virtual machine
+- name: 4.5_create_virtual_machine_from_a_template
   hosts: localhost
   connection: local
   gather_facts: no
@@ -24,74 +24,23 @@
             - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
           vars:
             query: "[?guest_name=='{{ vm_name }}']"
-          register: guest_info
+          failed_when: vm_shutdown.instance.hw_name == "{{ vm_name }}"
+          register: vm_exists
   
-        - name: Create a VM from a template
-          hosts: localhost
-          connection: local
-          gather_facts: no
-          tasks:
-          - name: Creating virtual machine from a template
-            vmware_guest:
-              name: "{{ vm_name }}"
-              template: "{{ vm_template }}"
-              datacenter: "ha-datacenter" #"{{ vm_datacenter }}"
-              folder: "{{ vm_datacenter }}"
-              state: poweredOff
-              #wait_for_ip_address: yes
+        - name: vm_exists
+          debug:
+            var: vm_exists
 
-        - name: shutting down guest
-          community.vmware.vmware_guest_powerstate:
-            datacenter: "{{ item.datacenter }}"
-            name: "{{ item.guest_name }}"
-            state: shutdown-guest
-            state_change_timeout: 200      
-          with_items:
-            - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
-          vars:
-            query: "[?guest_name=='{{ vm_name }}']"
-          failed_when: vm_shutdown.instance.hw_power_status != 'poweredOff' and vm_shutdown.changed == false        
-          register: vm_shutdown
-
-        - name: Wait 15 seconds
-          ansible.builtin.pause:
-            seconds: 15
-
-        - name: increasing virtual machine disk
-          vmware_guest_disk:
-            datacenter: "{{ item.datacenter }}"  #"{{ vcenter_datacenter }}"
-            name: "{{ item.guest_name }}" #"{{ vm_name }}"
-            disk:
-              - size_gb: 3 #"{{ vm_disk_size_gb }}"
-                scsi_controller: 1 #"{{ vm_disk_scsi_controller }}"
-                scsi_type: paravirtual #"{{ vm_disk_scsi_type }}"
-                unit_number: 1 #"{{ vm_disk_scsi_unit }}"                
-                state: present                
-                #disk_mode: persistent #"{{ vm_disk_mode }}"
-                #type: thick #"{{ vm_disk_type }}"
-                #datastore: "corro-datastore2" #"{{ item.datastore }}" #"{{ vm_disk_datastore }}"
-          with_items:
-            - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
-          vars:
-            query: "[?guest_name=='{{ vm_name }}']"                
-          register: vm_add_disk
-
-        - name: Wait 30 seconds
-          ansible.builtin.pause:
-            seconds: 30         
-
-        - name: powering on guest
-          community.vmware.vmware_guest_powerstate:
-            datacenter: "{{ item.datacenter }}"
-            name: "{{ item.guest_name }}"
-            state: powered-on          
-          with_items:
-            - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
-          vars:
-            query: "[?guest_name=='{{ vm_name }}']"
-          failed_when: vm_shutdown.instance.hw_power_status != 'poweredOn' and vm_shutdown.changed == false 
-          register: vm_poweron
-
-        - name: Wait 15 seconds
-          ansible.builtin.pause:
-            seconds: 15          
+        # - name: Create a VM from a template
+        #   hosts: localhost
+        #   connection: local
+        #   gather_facts: no
+        #   tasks:
+        #   - name: Creating virtual machine from a template
+        #     vmware_guest:
+        #       name: "{{ vm_name }}"
+        #       template: "{{ vm_template }}"
+        #       datacenter: "ha-datacenter" #"{{ vm_datacenter }}"
+        #       folder: "{{ vm_datacenter }}"
+        #       state: poweredOff
+            
