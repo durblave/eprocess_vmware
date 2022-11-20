@@ -30,9 +30,10 @@
           ignore_errors: yes
   
         - name: Checking if virtual machine name exists in the environment
-          debug:
+          fail:
             msg: "Virtual machine {{ vm_name }} already exists with uuid {{ vm_exists.results[0].instance.hw_product_uuid }}"
-          failed_when: vm_exists.results[0].instance.hw_name == "{{ vm_name }}"
+          when: vm_exists.results[0].instance.hw_name is defined
+          #ignore_errors: yes
 
         - name: Creating virtual machine from a template
           vmware_guest:
