@@ -4,7 +4,7 @@
   connection: local
   gather_facts: no
   vars:
-    vm_name: "Unifi Wifi Controller 7.144"
+    vm_name: "Unifi Wifi Controller 7.1"
     vm_template: "template_el8"
     vm_folder: /ha-datacenter/vm
     vm_datacenter: ha-datacenter
@@ -41,5 +41,5 @@
             template: "{{ vm_template }}"
             datacenter: "{{ vm_datacenter }}"
             folder: "{{ vm_folder }}"
-            state: poweredOff
+            state: poweredoff
           
