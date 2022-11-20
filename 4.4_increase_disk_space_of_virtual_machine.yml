@@ -68,12 +68,12 @@
             datacenter: "{{ item.datacenter }}"
             name: "{{ item.guest_name }}"
             state: poweredon
-          failed_when: vm_shutdown.instance.hw_power_status != 'poweredOff' and vm_shutdown.changed == false
-          register: vm_poweron
+          failed_when: vm_shutdown.instance.hw_power_status != 'poweredOn' and vm_shutdown.changed == false
           with_items:
             - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
           vars:
             query: "[?guest_name=='{{ vm_name }}']"
+          register: vm_poweron
 
         - name: Wait 15 seconds
           ansible.builtin.pause:
