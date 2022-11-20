@@ -52,11 +52,11 @@
             - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
           vars:
             query: "[?guest_name=='{{ vm_name }}']"                
-          register: vm_add_disk
+          register: vm_snapshot
 
-        - name: Wait 15 seconds
+        - name: Wait 20 seconds
           ansible.builtin.pause:
-            seconds: 15          
+            seconds: 20          
 
         - name: Connect to VMWare and poweron guest
           community.vmware.vmware_guest:

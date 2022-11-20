@@ -45,7 +45,7 @@
             datacenter: "{{ item.datacenter }}"  #"{{ vcenter_datacenter }}"
             name: "{{ item.guest_name }}" #"{{ vm_name }}"
             disk:
-              - size_gb: 2 #"{{ vm_disk_size_gb }}"
+              - size_gb: 3 #"{{ vm_disk_size_gb }}"
                 scsi_controller: 1 #"{{ vm_disk_scsi_controller }}"
                 scsi_type: paravirtual #"{{ vm_disk_scsi_type }}"
                 unit_number: 1 #"{{ vm_disk_scsi_unit }}"                
@@ -59,9 +59,9 @@
             query: "[?guest_name=='{{ vm_name }}']"                
           register: vm_add_disk
 
-        - name: Wait 15 seconds
+        - name: Wait 30 seconds
           ansible.builtin.pause:
-            seconds: 15          
+            seconds: 30         
 
         - name: Connect to VMWare and poweron guest
           community.vmware.vmware_guest:
