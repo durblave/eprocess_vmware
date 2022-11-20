@@ -2,7 +2,7 @@
 - name: 4.8_create a snapshot from a virtual machine
   hosts: localhost
   connection: local
-  gather_facts: no
+  gather_facts: yes
   vars:
     vm_name: "Unifi Wifi Controller 7.1"
 
