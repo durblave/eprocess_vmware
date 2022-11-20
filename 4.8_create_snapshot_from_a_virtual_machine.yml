@@ -26,16 +26,16 @@
   
         - name: shutting down guest
           community.vmware.vmware_guest_powerstate:
-            #datacenter: "{{ item.datacenter }}"
+            datacenter: "{{ item.datacenter }}"
             name: "{{ item.guest_name }}"
             state: shutdown-guest
             state_change_timeout: 200      
-          register: vm_shutdown
           with_items:
             - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
           vars:
             query: "[?guest_name=='{{ vm_name }}']"
-          #failed_when: vm_shutdown.instance.hw_power_status != 'poweredOff' and vm_shutdown.changed == false        
+          failed_when: vm_shutdown.instance.hw_power_status != 'poweredOff' and vm_shutdown.changed == false        
+          register: vm_shutdown
 
         - name: Wait 15 seconds
           ansible.builtin.pause:
@@ -70,7 +70,7 @@
             - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
           vars:
             query: "[?guest_name=='{{ vm_name }}']"
-          #failed_when: vm_shutdown.instance.hw_power_status != 'poweredOn' and vm_shutdown.changed == false            
+          failed_when: vm_shutdown.instance.hw_power_status != 'poweredOn' and vm_shutdown.changed == false            
 
         - name: Wait 15 seconds
           ansible.builtin.pause:

@@ -24,17 +24,19 @@
             query: "[?guest_name=='{{ vm_name }}']"
           register: guest_info
   
-        - name: Connect to VMWare and shutdown guest
-          community.vmware.vmware_guest:
+        - name: shutting down guest
+          community.vmware.vmware_guest_powerstate:
             datacenter: "{{ item.datacenter }}"
             name: "{{ item.guest_name }}"
-            state: shutdownguest
-          failed_when: vm_shutdown.instance.hw_power_status != 'poweredOff' and vm_shutdown.changed == false
-          register: vm_shutdown
+            state: shutdown-guest
+            state_change_timeout: 200      
           with_items:
             - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
           vars:
             query: "[?guest_name=='{{ vm_name }}']"
+          failed_when: vm_shutdown.instance.hw_power_status != 'poweredOff' and vm_shutdown.changed == false        
+          register: vm_shutdown    
+
 
         - name: Wait 15 seconds
           ansible.builtin.pause:
@@ -60,16 +62,16 @@
           ansible.builtin.pause:
             seconds: 30         
 
-        - name: Connect to VMWare and poweron guest
-          community.vmware.vmware_guest:
+        - name: powering on guest
+          community.vmware.vmware_guest_powerstate:
             datacenter: "{{ item.datacenter }}"
             name: "{{ item.guest_name }}"
-            state: poweredon
-          failed_when: vm_shutdown.instance.hw_power_status != 'poweredOn' and vm_shutdown.changed == false
+            state: powered-on          
           with_items:
             - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
           vars:
             query: "[?guest_name=='{{ vm_name }}']"
+          failed_when: vm_shutdown.instance.hw_power_status != 'poweredOn' and vm_shutdown.changed == false 
           register: vm_poweron
 
         - name: Wait 15 seconds

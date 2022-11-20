@@ -5,6 +5,8 @@
   gather_facts: no
   vars:
     vm_name: "Unifi Wifi Controller 7.1"
+    vm_folder: /ha-datacenter/vm
+    vm_datacenter: ha-datacenter
 
   tasks:
     - name: Adding new disk 
@@ -31,28 +33,25 @@
           tasks:
           - name: Creating virtual machine from a template
             vmware_guest:
-              name: clone_test_vm_2
-              template: template_el7 #"{{ vm_template }}"
+              name: "{{ vm_name }}"
+              template: "{{ vm_template }}"
               datacenter: "ha-datacenter" #"{{ vm_datacenter }}"
-              folder: /ha-datacenter/vm
+              folder: "{{ vm_datacenter }}"
               state: poweredOff
               #wait_for_ip_address: yes
 
-
-d
-
-
-        - name: Connect to VMWare and shutdown guest
-          community.vmware.vmware_guest:
+        - name: shutting down guest
+          community.vmware.vmware_guest_powerstate:
             datacenter: "{{ item.datacenter }}"
             name: "{{ item.guest_name }}"
-            state: shutdownguest
-          failed_when: vm_shutdown.instance.hw_power_status != 'poweredOff' and vm_shutdown.changed == false
-          register: vm_shutdown
+            state: shutdown-guest
+            state_change_timeout: 200      
           with_items:
             - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
           vars:
             query: "[?guest_name=='{{ vm_name }}']"
+          failed_when: vm_shutdown.instance.hw_power_status != 'poweredOff' and vm_shutdown.changed == false        
+          register: vm_shutdown
 
         - name: Wait 15 seconds
           ansible.builtin.pause:
@@ -81,16 +80,16 @@ d
           ansible.builtin.pause:
             seconds: 30         
 
-        - name: Connect to VMWare and poweron guest
-          community.vmware.vmware_guest:
+        - name: powering on guest
+          community.vmware.vmware_guest_powerstate:
             datacenter: "{{ item.datacenter }}"
             name: "{{ item.guest_name }}"
-            state: poweredon
-          failed_when: vm_shutdown.instance.hw_power_status != 'poweredOn' and vm_shutdown.changed == false
+            state: powered-on          
           with_items:
             - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
           vars:
             query: "[?guest_name=='{{ vm_name }}']"
+          failed_when: vm_shutdown.instance.hw_power_status != 'poweredOn' and vm_shutdown.changed == false 
           register: vm_poweron
 
         - name: Wait 15 seconds
