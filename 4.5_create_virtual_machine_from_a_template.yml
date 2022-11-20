@@ -30,7 +30,7 @@
         - name: vm_exists
           debug:
             var: vm_exists
-          #when: vm_exists.instance.hw_name == "{{ vm_name }}"
+          when: vm_exists.results.instance.hw_name == vm_name
 
         # - name: Create a VM from a template
         #   hosts: localhost
