@@ -59,3 +59,16 @@
           vars:
             query: "[?guest_name=='{{ vm_name }}']"                
           register: vm_add_disk
+
+
+        - name: Connect to VMWare and poweron guest
+          community.vmware.vmware_guest:
+            datacenter: "{{ item.datacenter }}"
+            name: "{{ item.guest_name }}"
+            state: poweron
+          failed_when: vm_shutdown.instance.hw_power_status != 'poweredOff' and vm_shutdown.changed == false
+          register: vm_shutdown
+          with_items:
+            - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
+          vars:
+            query: "[?guest_name=='{{ vm_name }}']"
