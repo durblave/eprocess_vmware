@@ -24,7 +24,7 @@
             - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
           vars:
             query: "[?guest_name=='{{ vm_name }}']"
-          failed_when: vm_shutdown.instance.hw_name == "{{ vm_name }}"
+          #failed_when: vm_shutdown.instance.hw_name == "{{ vm_name }}"
           register: vm_exists
   
         - name: vm_exists
