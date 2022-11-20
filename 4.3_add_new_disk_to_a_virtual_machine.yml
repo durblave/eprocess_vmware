@@ -46,7 +46,7 @@
             name: "{{ item.guest_name }}" #"{{ vm_name }}"
             disk:
               - size_gb: 1 #"{{ vm_disk_size_gb }}"
-                datastore: "{{ item.datastore }}"
+                #datastore: "{{ item.datastore }}"
                 type: thick #"{{ vm_disk_type }}"
                 datastore: "corro-datastore2" #"{{ item.datastore }}" #"{{ vm_disk_datastore }}"
                 scsi_controller: 1 #"{{ vm_disk_scsi_controller }}"
