@@ -3,7 +3,7 @@
   hosts: all
   gather_facts: yes
   become: yes
-  remote_user: test
+  #remote_user: test
   vars:
     #certificate_path: 
     satellite_url: https://satellite-server.example.com
