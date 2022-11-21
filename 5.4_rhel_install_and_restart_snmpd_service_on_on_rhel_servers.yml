@@ -1,0 +1,71 @@
+---
+#RHEL - install and restart snmpd service on all RHEL servers
+- name: 5.4 - RHEL - install and restart snmpd service on all RHEL servers
+  hosts: "{{ target_server }}"
+  gather_facts: true
+  remote_user: test
+  tasks:
+    - name: Check reachability
+      ansible.builtin.ping: 
+      register: reachability
+
+    - name: Installing package
+      block:
+        - name: Installing snmpd service
+          ansible.builtin.package:
+            name:
+              - net-snmp
+              - net-snmp-utils
+              - net-snmp-devel
+            use: yum
+            state: latest
+          when: ansible_distribution_major_version == '7'
+               
+        - name: Installing snmpd service
+          ansible.builtin.package:
+            name:
+              - net-snmp
+              - net-snmp-utils
+              - net-snmp-devel
+            use: dnf
+            state: latest
+          when: ansible_distribution_major_version == '8'
+
+        - name: Enabling and starting SNMPD service
+          ansible.builtin.service:
+            name: snmpd
+            enabled: yes        
+            state: stated
+
+        - name: Opening snmp port on firewall
+          ansible.posix.firewalld:
+            service: snmp
+            permanent: yes
+            state: enabled       
+            immediate: yes
+
+        - name: Applying snmp configuration
+          shell: net-snmp-config --create-snmpv3-user -ro -A ecobank@network -a MD5 -X ecobank@network -x DES orionadm
+          register: snmp_config
+          #template:
+          #  src: snmpd.j2
+          #  dest: /etc/snmp/snmpd.conf
+          #  owner: root
+          #  group: root
+          #  mode: 0600
+
+        - name: Enabling and starting SNMPD service
+          ansible.builtin.service:
+            name: snmpd
+            enabled: yes        
+            state: restated
+
+        - name: Validating configuration 
+          shell: snmpwalk -v3 -u orionadm -l authNoPriv -a MD5 -x DES -A ecobank@network -X ecobank@network localhost
+          register: snmp_walk
+
+
+      when: ansible_distribution == 'Red Hat Enterprise Linux' and ansible_distribution_major_version > '6' and 'success' in reachability
+      become: true
+      become_user: root
+

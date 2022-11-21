@@ -1,0 +1,42 @@
+---
+- name: 5.6-RHEL - patch RHEL serverswith new packages
+  hosts: all
+  gather_facts: yes
+  become: yes
+  remote_user: test
+  vars:
+    certificate_path: 
+    satellite_url: https://satellite-server.example.com
+    activation_key: "rhel"
+    organisation_id: "ecobank-satellite"
+  tasks:
+    - name: Configure Corporate CA certificate_path
+      copy:
+        src: "{{ certificate_path }}"
+        dest: /etc/pki/ca-trust/source/anchors/
+        owner: root
+        group: root
+        
+    - name: update certificate trust store
+      shell: /usr/bin/update-ca-trust
+
+    - name: Pull Katello Package
+      yum:
+        name: "{{ satellite_url }}"/pub/katello-ca-consumer-latest.noarch.rpm
+        state: present
+        disable_gpg_key: yes
+
+    - name: Subscribe to Satellite
+      redhat_subscription:
+        state: present
+        server_hostname: "{{ satellite_url }}"
+        server_insecure: yes
+        activationkey: "{{ activation_key }}"
+        org_id: "{{ organisation_id }}"
+        force_register: yes
+      register: result
+
+    - name: Update all packages
+      yum:
+        name: "*"
+        state: latest
