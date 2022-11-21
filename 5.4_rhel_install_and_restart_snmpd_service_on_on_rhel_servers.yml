@@ -19,17 +19,17 @@
               - net-snmp-devel
             use: yum
             state: latest
-          when: ansible_distribution_major_version == '7'
+          #when: ansible_distribution_major_version == '7'
                
-        - name: Installing snmpd service
-          ansible.builtin.package:
-            name:
-              - net-snmp
-              - net-snmp-utils
-              - net-snmp-devel
-            use: dnf
-            state: latest
-          when: ansible_distribution_major_version == '8'
+        # - name: Installing snmpd service
+        #   ansible.builtin.package:
+        #     name:
+        #       - net-snmp
+        #       - net-snmp-utils
+        #       - net-snmp-devel
+        #     use: dnf
+        #     state: latest
+        #   when: ansible_distribution_major_version == '8'
 
         - name: Enabling and starting SNMPD service
           ansible.builtin.service:
