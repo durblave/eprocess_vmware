@@ -1,0 +1,109 @@
+---
+controller_templates:
+- name: 4.3_add_new_disk_to_a_virtual_machine
+  description: Ansible Managed
+  organization: Default
+  job_type: run
+  inventory: 00_WINTEL_VMWARE_INV
+  project: 01_WINTEL_VMWARE_USECASES
+  playbook: 4.3_add_new_disk_to_a_virtual_machine.yml
+  become_enabled: false
+  instance_groups:
+  - default
+  verbosity: 3
+  execution_environment: eprocess_ee_vmware_001
+  credentials:
+  - vcenter_dev_cred
+  survey_enabled: false
+  survey_spec: "{{ lookup( 'template', 'template_surveys/survey_4.3_add_new_disk_to_a_virtual_machine.yml') | from_yaml }}"
+  state: present
+
+- name: 4.4_increase_disk_space_of_virtual_machine
+  description: Ansible Managed
+  organization: Default
+  job_type: run
+  inventory: 00_WINTEL_VMWARE_INV
+  project: 01_WINTEL_VMWARE_USECASES
+  playbook: 4.4_increase_disk_space_of_virtual_machine.yml
+  become_enabled: false
+  instance_groups:
+  - default
+  verbosity: 3
+  execution_environment: eprocess_ee_vmware_001
+  credentials:
+  - vcenter_dev_cred
+  survey_enabled: false
+  survey_spec: "{{ lookup( 'template', 'template_surveys/survey_4.4_increase_disk_space_of_virtual_machine.yml') | from_yaml }}"
+  state: present
+
+- name: 4.5_create_virtual_machine_from_a_template
+  description: Ansible Managed
+  organization: Default
+  job_type: run
+  inventory: 00_WINTEL_VMWARE_INV
+  project: 01_WINTEL_VMWARE_USECASES
+  playbook: survey_4.5_create_virtual_machine_from_a_template.yml
+  become_enabled: false
+  instance_groups:
+  - default
+  verbosity: 3
+  execution_environment: eprocess_ee_vmware_001
+  credentials:
+  - vcenter_dev_cred
+  survey_enabled: false
+  survey_spec: "{{ lookup( 'template', 'template_surveys/survey_4.5_create_virtual_machine_from_a_template.yml') | from_yaml }}"
+  state: present
+
+  - name: 4.6_create_virtual_machine_clone
+  description: Ansible Managed
+  organization: Default
+  job_type: run
+  inventory: 00_WINTEL_VMWARE_INV
+  project: 01_WINTEL_VMWARE_USECASES
+  playbook: 4.6_create_virtual_machine_clone.yml
+  become_enabled: false
+  instance_groups:
+  - default
+  verbosity: 3
+  execution_environment: eprocess_ee_vmware_001
+  credentials:
+  - vcenter_dev_cred
+  survey_enabled: false
+  survey_spec: "{{ lookup( 'template', 'template_surveys/survey_4.6_create_virtual_machine_clone.yml') | from_yaml }}"
+  state: present
+
+  - name: 4.7_restore_virtual_machine_from_a_snapshot
+  description: Ansible Managed
+  organization: Default
+  job_type: run
+  inventory: 00_WINTEL_VMWARE_INV
+  project: 01_WINTEL_VMWARE_USECASES
+  playbook: 4.7_restore_virtual_machine_from_a_snapshot.yml
+  become_enabled: false
+  instance_groups:
+  - default
+  verbosity: 3
+  execution_environment: eprocess_ee_vmware_001
+  credentials:
+  - vcenter_dev_cred
+  survey_enabled: false
+  survey_spec: "{{ lookup( 'template', 'template_surveys/survey_4.7_restore_virtual_machine_from_a_snapshot.yml') | from_yaml }}"
+  state: present
+
+  - name: 4.8_create_snapshot_from_a_virtual_machine
+  description: Ansible Managed
+  organization: Default
+  job_type: run
+  inventory: 00_WINTEL_VMWARE_INV
+  project: 01_WINTEL_VMWARE_USECASES
+  playbook: 4.8_create_snapshot_from_a_virtual_machine.yml
+  become_enabled: false
+  instance_groups:
+  - default
+  verbosity: 3
+  execution_environment: eprocess_ee_vmware_001
+  credentials:
+  - vcenter_dev_cred
+  survey_enabled: false
+  survey_spec: "{{ lookup( 'template', 'template_surveys/survey_4.8_create_snapshot_from_a_virtual_machine.yml') | from_yaml }}"
+  state: present
