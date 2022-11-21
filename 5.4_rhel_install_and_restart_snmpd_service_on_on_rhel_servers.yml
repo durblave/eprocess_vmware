@@ -9,6 +9,10 @@
       ansible.builtin.ping: 
       register: reachability
 
+    - name:
+      debug:
+        msg: "{{ ansible_distribution }} and  {{ ansible_distribution_major_version }} and {{ reachability }}"      
+
     - name: Installing package
       block:
         - name: Installing snmpd service
