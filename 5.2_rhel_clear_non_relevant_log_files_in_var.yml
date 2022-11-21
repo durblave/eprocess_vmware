@@ -29,5 +29,5 @@
             path: "{{ item.path }}"
             state: absent
           with_items: "{{ find_results.files }}"
-      when: "'success' in reachability.stdout"
+      #when: "'success' in reachability.stdout"
 
