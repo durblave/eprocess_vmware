@@ -1,0 +1,14 @@
+---
+- name: 5.2 - RHEL - clear non-relevant log files in /var
+  hosts: all #"{{ search_hosts }}"
+  gather_facts: true
+
+  # vars:
+  #   search_hosts:
+  #   find_patterns_list
+
+  tasks:
+    - name: Check reachability
+      ping:
+      register: reachability
+
