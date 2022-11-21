@@ -1,9 +1,9 @@
 ---
 #RHEL - install and restart snmpd service on all RHEL servers
 - name: 5.4 - RHEL - install and restart snmpd service on all RHEL servers
-  hosts: "{{ target_server }}"
+  hosts: all #"{{ target_server }}"
   gather_facts: true
-  remote_user: test
+  #remote_user: test
   tasks:
     - name: Check reachability
       ansible.builtin.ping: 
