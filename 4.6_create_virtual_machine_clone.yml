@@ -1,0 +1,72 @@
+---
+- name: 4.6 clone a virtual machine
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  vars:
+    vm_name: "Unifi Wifi Controller 7.1"
+    vm_name_clone: test_vm_clone
+    vm_folder:
+    vm_datacenter:
+    vm_datastore:
+    vm_esxi_host:
+    vm_resource_pool:
+
+  tasks:
+    - name: Cloning virtual machine
+      block:
+        - name: Getting state of all virtual machines
+          community.vmware.vmware_vm_info:
+          delegate_to: localhost
+          register: vm_info
+
+        - name: Gathering information if source vm exists
+          community.vmware.vmware_guest_info:
+            datacenter: "{{ item.datacenter }}"
+            uuid: "{{ item.uuid }}"
+          with_items:
+            - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
+          vars:
+            query: "[?guest_name=='{{ vm_name_ }}']"
+          failed_when: vm_exists.instance.hw_name != "{{ vm_name }}"
+          register: vm_exists          
+
+        - name: Gathering information if clone vm exists
+          community.vmware.vmware_guest_info:
+            datacenter: "{{ item.datacenter }}"
+            uuid: "{{ item.uuid }}"
+          with_items:
+            - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
+          vars:
+            query: "[?guest_name=='{{ vm_name_clone }}']"
+          failed_when: vm_exists.instance.hw_name == "{{ vm_name_clone }}"
+          register: vm_exists
+          #ignore_errors: yes
+
+        - name: shutting down source virtual machine
+          community.vmware.vmware_guest_powerstate:
+            datacenter: "{{ item.datacenter }}"
+            name: "{{ item.guest_name }}"
+            state: shutdown-guest
+            state_change_timeout: 200      
+          with_items:
+            - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
+          vars:
+            query: "[?guest_name=='{{ vm_name }}']"
+          failed_when: vm_shutdown.instance.hw_power_status != 'poweredOff' and vm_shutdown.changed == false        
+          register: vm_shutdown
+
+        - name: "Cloning source virtual machine to {{ vm_name_clone }}"
+          community.vmware.vmware_guest_instant_clone:
+            folder: "{{ item.folder }}" #"{{ vm_folder }}"
+            datastore: "{{ item.datastore[0] }}" #"{{ vm_datastore }}"
+            datacenter: "{{ item.datacenter }}" #"{{ vm_datacenter }}"
+            host: "{{ item.hw_esxi_host }}" #"{{ vm_esxi_host }}"
+            name: "{{ vm_name_clone }}" 
+            parent_vm: "{{ vm_name }}"
+            resource_pool: "{{ vm_resource_pool }}"
+          with_items:
+            - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
+          vars:
+            query: "[?guest_name=='{{ vm_name }}']"
+          
