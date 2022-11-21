@@ -1,7 +1,6 @@
 ---
 - name: Ping test
-  #hosts: all
-  hosts: ctrl 
+  hosts: all
   gather_facts: yes
   connection: ssh
   tasks:
