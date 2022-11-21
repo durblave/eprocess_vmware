@@ -17,7 +17,10 @@
           find:
             paths: /var # "{{ find_paths_list }}"
             patterns: "{{ find_patterns_list }}"
-            use:regex: true
+            #use:regex: true
+            hidden: true
+            file_type: any
+            recurse: true
           register: find_results
 
         - name: Listing files to be deleted.
