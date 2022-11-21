@@ -58,7 +58,7 @@
           ansible.builtin.service:
             name: snmpd
             enabled: yes        
-            state: restated
+            state: restarted
 
         - name: Validating configuration 
           shell: snmpwalk -v3 -u orionadm -l authNoPriv -a MD5 -x DES -A ecobank@network -X ecobank@network localhost
