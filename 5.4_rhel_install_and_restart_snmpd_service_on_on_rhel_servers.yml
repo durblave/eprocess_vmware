@@ -35,7 +35,7 @@
           ansible.builtin.service:
             name: snmpd
             enabled: yes        
-            state: stated
+            state: started
 
         - name: Opening snmp port on firewall
           ansible.posix.firewalld:
