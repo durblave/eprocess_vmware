@@ -7,11 +7,7 @@
   tasks:
     - name: Check reachability
       ansible.builtin.ping: 
-      register: reachability
-
-    - name:
-      debug:
-        msg: "{{ ansible_distribution }} and  {{ ansible_distribution_major_version }} and {{ reachability }}"      
+      register: reachability    
 
     - name: Installing package
       block:
@@ -68,12 +64,7 @@
           shell: snmpwalk -v3 -u orionadm -l authNoPriv -a MD5 -x DES -A ecobank@network -X ecobank@network localhost
           register: snmp_walk
 
-        - name:
-          debug:
-            msg: "{{ ansible_distribution }} and  {{ ansible_distribution_major_version }} and {{ reachability }}"
-
-
-      when: ansible_distribution == 'Red Hat Enterprise Linux' and ansible_distribution_major_version > '6' and 'success' in reachability
+      when: ansible_distribution == 'RedHat' and ansible_distribution_major_version > '6' and 'pong' in reachability
       become: true
       become_user: root
 
