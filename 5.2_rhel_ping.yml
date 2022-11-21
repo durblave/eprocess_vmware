@@ -1,5 +1,5 @@
 ---
-- name: 5.2 - RHEL - clear non-relevant log files in /var
+- name: 5.2 - RHEL - ping host
   hosts: all #"{{ search_hosts }}"
   gather_facts: true
 
