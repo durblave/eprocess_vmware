@@ -1,0 +1,46 @@
+---
+name: 4.6_create_virtual_machine_clone-Survey
+description: 4.6_create_virtual_machine_clone-Survey
+spec:
+  - type: text
+    question_name: "Enter VM Name"
+    question_description: "Name of virtual machine to be cloned."
+    variable: vm_name
+    required: true
+    default: ""
+  - type: text
+    question_name: "Enter Clone VM name"
+    question_description: "Name of virtual machine clone to be created."
+    variable: vm_name_clone
+    required: true
+    default: ""
+  - type: text
+    question_name: "Enter virtual machine folder"
+    question_description: "Destination folder, absolute or relative path to find an existing guest."
+    variable: vm_folder
+    required: true
+    default: ""  
+  - type: text
+    question_name: "Enter Datacenter"
+    question_description: "Destination datacenter for the deploy operation."
+    variable: vm_datacenter
+    required: true
+    default: ""
+  - type: text
+    question_name: "Enter Datastore"
+    question_description: "The name of the datastore or the datastore cluster."
+    variable: vm_datastore
+    required: true
+    default: ""
+  - type: text
+    question_name: "Enter ESXi host"
+    question_description: "Name of the ESX Host in datacenter in which to place cloned VM."
+    variable: vm_esxi_host
+    required: true
+    default: ""
+  - type: text
+    question_name: "Enter reourse pool to place vm"
+    question_description: "Name of the resource pool in datacenter in which to place deployed VM."
+    variable: vm_resource_pool
+    required: true
+    default: ""  

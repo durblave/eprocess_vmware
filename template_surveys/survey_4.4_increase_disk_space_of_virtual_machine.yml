@@ -1,0 +1,44 @@
+---
+name: 4.5_create_virtual_machine_from_a_template-Survey
+description: 4.5_create_virtual_machine_from_a_template-Survey
+spec:
+  - type: text
+    question_name: "Enter Virtual Machine Name"
+    question_description: "Name of virtual machine to create snapshot from"
+    variable: vm_name
+    required: true
+    default: ""
+  - type: text
+    question_name: "Enter disk size in GB"
+    question_description: "Disk storage size in gb."
+    variable: vm_disk_size_gb
+    required: true
+    default: ""
+  - type:  multiplechoice
+    question_name: "Enter disk controller number"
+    question_description: "SCSI controller number. Only 4 SCSI controllers are allowed per VM."
+    variable: vm_disk_scsi_controller
+    required: true
+    choices:
+      - "0"
+      - "1"
+      - "2"
+      - "3"    
+    default: ""  
+  - type:  multiplechoice
+    question_name: "Select type of scsi controller"
+    question_description: "Type of SCSI controller. This value is required only for the first occurrence of SCSI Controller."
+    variable: vm_disk_scsi_type
+    required: true
+    choices:
+      - "buslogic"
+      - "lsilogic"
+      - "lsilogicsas"
+      - "paravirtual"
+    default: ""
+  - type: integer
+    question_name: "Enter disk unit number"
+    question_description: "Disk Unit Number."
+    variable: vm_disk_scsi_unit
+    required: true
+    default: 0

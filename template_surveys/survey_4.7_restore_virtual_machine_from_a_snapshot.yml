@@ -1,0 +1,28 @@
+---
+name: 4.7_restore_virtual_machine_from_a_snapshot-Survey
+description: 4.7_restore_virtual_machine_from_a_snapshot-Survey
+spec:
+  - type: text
+    question_name: "Enter Virtual Machine Name"
+    question_description: "Name of virtual machine to create snapshot from"
+    variable: vm_name
+    required: true
+    default: ""
+  - type: text
+    question_name: "Enter Datacenter"
+    question_description: "Destination datacenter for the deploy operation."
+    variable: vm_datacenter
+    required: true
+    default: ""
+  - type: text
+    question_name: "Enter virtual machine folder"
+    question_description: "Destination folder, absolute or relative path to find an existing guest."
+    variable: vm_folder
+    required: true
+    default: ""  
+  - type: text
+    question_name: "Enter snapshot name"
+    question_description: "Name of virtual machine snapshot to be created."
+    variable: vm_snapshot
+    required: true
+    default: ""

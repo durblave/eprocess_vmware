@@ -3,11 +3,11 @@
   hosts: localhost
   connection: local
   gather_facts: no
-  vars:
-    vm_name: "Unifi Wifi Controller 7.1"
-    vm_template: "template_el8"
-    vm_folder: /ha-datacenter/vm
-    vm_datacenter: ha-datacenter
+  # vars:
+  #   vm_name: "Unifi Wifi Controller 7.1"
+  #   vm_template: "template_el8"
+  #   vm_folder: /ha-datacenter/vm
+  #   vm_datacenter: ha-datacenter
 
   tasks:
     - name: Creating virtual machine from template 

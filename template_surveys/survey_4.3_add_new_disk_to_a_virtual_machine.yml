@@ -1,0 +1,91 @@
+---
+name: 4.3_add_new_disk_to_a_virtual_machine-Survey
+description: 4.3_add_new_disk_to_a_virtual_machine-Survey
+spec:
+  - type: text
+    question_name: "Enter Virtual Machine Name"
+    question_description: "Name of virtual machine to create snapshot from"
+    variable: vm_name
+    required: true
+    default: ""
+  - type: text
+    question_name: "Enter Datacenter"
+    question_description: "Destination datacenter for the deploy operation."
+    variable: vm_datacenter
+    required: true
+    default: ""
+  - type: text
+    question_name: "Enter Datastore"
+    question_description: "The name of the datastore or the datastore cluster."
+    variable: vm_datastore
+    required: true
+    default: "" 
+  - type: text
+    question_name: "Enter disk size in GB"
+    question_description: "Disk storage size in gb."
+    variable: vm_disk_size_gb
+    required: true
+    default: ""
+  - type:  multiplechoice
+    question_name: "Enter disk controller number"
+    question_description: "SCSI controller number. Only 4 SCSI controllers are allowed per VM."
+    variable: vm_disk_scsi_controller
+    required: true
+    choices:
+      - "0"
+      - "1"
+      - "2"
+      - "3"    
+    default: ""  
+  - type:  multiplechoice
+    question_name: "Select disk mode"
+    question_description: "The type of disk, if not specified then use thick type for new disk, no eagerzero."
+    variable: vm_disk_type
+    required: true
+    choices:
+      - "thin"
+      - "eagerzeroedthick"
+      - "thick"
+      - "rdm"      
+      - "vpmemdisk"      
+    default: "persistent"    
+  - type:  multiplechoice
+    question_name: "Select type of scsi controller"
+    question_description: "Type of SCSI controller. This value is required only for the first occurrence of SCSI Controller."
+    variable: vm_disk_scsi_type
+    required: true
+    choices:
+      - "buslogic"
+      - "lsilogic"
+      - "lsilogicsas"
+      - "paravirtual"
+    default: ""
+  - type: integer
+    question_name: "Enter disk unit number"
+    question_description: "Disk Unit Number."
+    variable: vm_disk_scsi_unit
+    required: true
+    default: 0
+  - type:  multiplechoice
+    question_name: "Select disk mode"
+    question_description: "Type of disk mode. If not specified then use persistent mode for new disk."
+    variable: vm_disk_mode
+    required: true
+    choices:
+      - "persistent"
+      - "independent_persistent"
+      - "dependent_persistent"
+    default: "persistent"
+
+
+
+  # vars:
+  #   vm_name: "Unifi Wifi Controller 7.1"
+  #   vcenter_datacenter:
+  #   vm_disk_size_gb:
+  #   vm_disk_type: 
+  #   vm_disk_datastore:
+  #   vm_disk_scsi_controller:
+  #   vm_disk_scsi_type:
+  #   vm_disk_scsi_unit:
+  #   vm_disk_mode:
