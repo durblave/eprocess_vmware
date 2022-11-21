@@ -64,7 +64,7 @@
           shell: snmpwalk -v3 -u orionadm -l authNoPriv -a MD5 -x DES -A ecobank@network -X ecobank@network localhost
           register: snmp_walk
 
-      when: ansible_distribution == 'RedHat' and ansible_distribution_major_version > '6' and 'pong' in reachability
+      #when: ansible_distribution == 'RedHat' and ansible_distribution_major_version > '6' and 'pong' in reachability
       become: true
       become_user: root
 
