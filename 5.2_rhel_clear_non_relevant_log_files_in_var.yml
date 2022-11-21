@@ -1,6 +1,6 @@
 ---
 - name: 5.2 - RHEL - clear non-relevant log files in /var
-  hosts: "{{ search_hosts }}"
+  hosts: all #"{{ search_hosts }}"
   gather_facts: true
 
   # vars:
