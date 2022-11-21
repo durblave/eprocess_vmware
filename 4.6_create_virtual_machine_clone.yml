@@ -3,14 +3,14 @@
   hosts: localhost
   connection: local
   gather_facts: no
-  vars:
-    vm_name: "Unifi Wifi Controller 7.1"
-    vm_name_clone: test_vm_clone
-    vm_folder:
-    vm_datacenter:
-    vm_datastore:
-    vm_esxi_host:
-    vm_resource_pool:
+  # vars:
+  #   vm_name: "Unifi Wifi Controller 7.1"
+  #   vm_name_clone: test_vm_clone
+  #   vm_folder:
+  #   vcenter_datacenter:
+  #   vm_datastore:
+  #   vm_esxi_host:
+  #   vm_resource_pool:
 
   tasks:
     - name: Cloning virtual machine
@@ -58,13 +58,20 @@
 
         - name: "Cloning source virtual machine to {{ vm_name_clone }}"
           community.vmware.vmware_guest_instant_clone:
-            folder: "{{ item.folder }}" #"{{ vm_folder }}"
-            datastore: "{{ item.datastore[0] }}" #"{{ vm_datastore }}"
-            datacenter: "{{ item.datacenter }}" #"{{ vm_datacenter }}"
-            host: "{{ item.hw_esxi_host }}" #"{{ vm_esxi_host }}"
+            folder: "{{ vm_folder }}"
+            datastore: "{{ vm_datastore }}"
+            datacenter: "{{ vcenter_datacenter }}"
+            host: "{{ vm_esxi_host }}"
             name: "{{ vm_name_clone }}" 
             parent_vm: "{{ vm_name }}"
-            resource_pool: "{{ vm_resource_pool }}"
+            resource_pool: "{{ vm_resource_pool }}"          
+            # folder: "{{ item.folder }}" #"{{ vm_folder }}"
+            # datastore: "{{ item.datastore[0] }}" #"{{ vm_datastore }}"
+            # datacenter: "{{ item.datacenter }}" #"{{ vm_datacenter }}"
+            # host: "{{ item.hw_esxi_host }}" #"{{ vm_esxi_host }}"
+            # name: "{{ vm_name_clone }}" 
+            # parent_vm: "{{ vm_name }}"
+            # resource_pool: "{{ vm_resource_pool }}"
           with_items:
             - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
           vars:

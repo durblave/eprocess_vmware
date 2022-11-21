@@ -10,7 +10,7 @@
     vm_datacenter: ha-datacenter
 
   tasks:
-    - name: Adding new disk 
+    - name: Creating virtual machine from template 
       block:
         - name: Getting state of all virtual machines
           community.vmware.vmware_vm_info:

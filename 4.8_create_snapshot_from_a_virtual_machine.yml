@@ -3,8 +3,10 @@
   hosts: localhost
   connection: local
   gather_facts: yes
-  vars:
-    vm_name: "Unifi Wifi Controller 7.1"
+  # vars:
+  #   vm_name: "Unifi Wifi Controller 7.1"
+  #   vm_datacenter:
+  #   vm_folder:
 
   tasks:
     - name: creating vm snapshot
@@ -43,13 +45,20 @@
 
         - name: creating virtual machine snapshot
           vmware_guest_snapshot:
-            datacenter: "{{ item.datacenter }}"
-            name: "{{ item.guest_name }}"
+            datacenter: "{{ vm_datacenter }}"
+            name: "{{ vm_name }}"
             state: present
             snapshot_name: "Ansible Managed Snapshot - {{ ansible_date_time.epoch }}"
-            folder: "{{ item.folder }}"
+            folder: "{{ vm_folder }}"
             description: "This snapshot is created by ansible {{ ansible_date_time.date }}"
-            quiesce: true    
+            quiesce: true             
+            # datacenter: "{{ item.datacenter }}" #"{{ vm_datacenter }}"
+            # name: "{{ item.guest_name }}" #"{{ vm_name }}"
+            # state: present
+            # snapshot_name: "Ansible Managed Snapshot - {{ ansible_date_time.epoch }}"
+            # folder: "{{ item.folder }}" #"{{ vm_folder }}"
+            # description: "This snapshot is created by ansible {{ ansible_date_time.date }}"
+            # quiesce: true    
           with_items:
             - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
           vars:

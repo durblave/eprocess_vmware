@@ -3,11 +3,15 @@
   hosts: localhost
   connection: local
   gather_facts: no
-  vars:
-    vm_name: "Unifi Wifi Controller 7.1"
+  # vars:
+    # vm_name: "Unifi Wifi Controller 7.1"
+    # vm_disk_size_gb:
+    # vm_disk_scsi_controller:
+    # vm_disk_scsi_type:
+    # vm_disk_scsi_unit:
 
   tasks:
-    - name: Adding new disk 
+    - name: increasing disk size disk 
       block:
         - name: Getting state of all virtual machines
           community.vmware.vmware_vm_info:
@@ -44,13 +48,19 @@
 
         - name: increasing virtual machine disk
           vmware_guest_disk:
-            datacenter: "{{ item.datacenter }}"  #"{{ vcenter_datacenter }}"
-            name: "{{ item.guest_name }}" #"{{ vm_name }}"
+            datacenter: "{{ vcenter_datacenter }}"
+            name: "{{ vm_name }}"          
+            # datacenter: "{{ item.datacenter }}"  #"{{ vcenter_datacenter }}"
+            # name: "{{ item.guest_name }}" #"{{ vm_name }}"
             disk:
-              - size_gb: 3 #"{{ vm_disk_size_gb }}"
-                scsi_controller: 1 #"{{ vm_disk_scsi_controller }}"
-                scsi_type: paravirtual #"{{ vm_disk_scsi_type }}"
-                unit_number: 1 #"{{ vm_disk_scsi_unit }}"                
+              - size_gb: "{{ vm_disk_size_gb }}"
+                scsi_controller: "{{ vm_disk_scsi_controller }}"
+                scsi_type: "{{ vm_disk_scsi_type }}"
+                unit_number: "{{ vm_disk_scsi_unit }}"             
+              # - size_gb: 3 #"{{ vm_disk_size_gb }}"
+              #   scsi_controller: 1 #"{{ vm_disk_scsi_controller }}"
+              #   scsi_type: paravirtual #"{{ vm_disk_scsi_type }}"
+              #   unit_number: 1 #"{{ vm_disk_scsi_unit }}"                
                 state: present                
           with_items:
             - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"

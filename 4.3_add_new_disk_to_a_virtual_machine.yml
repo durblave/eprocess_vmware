@@ -3,8 +3,16 @@
   hosts: localhost
   connection: local
   gather_facts: no
-  vars:
-    vm_name: "Unifi Wifi Controller 7.1"
+  # vars:
+  #   vm_name: "Unifi Wifi Controller 7.1"
+  #   vcenter_datacenter:
+  #   vm_disk_size_gb:
+  #   vm_disk_type:
+  #   vm_disk_datastore:
+  #   vm_disk_scsi_controller:
+  #   vm_disk_scsi_type:
+  #   vm_disk_scsi_unit:
+  #   vm_disk_mode:
 
   tasks:
     - name: Adding new disk 
@@ -43,24 +51,32 @@
 
         - name: add disk to virtual machine
           vmware_guest_disk:
-            datacenter: "{{ item.datacenter }}"  #"{{ vcenter_datacenter }}"
-            name: "{{ item.guest_name }}" #"{{ vm_name }}"
+            datacenter: "{{ vcenter_datacenter }}"
+            name: "{{ vm_name }}"          
+            # datacenter: "{{ item.datacenter }}"  #"{{ vcenter_datacenter }}"
+            # name: "{{ item.guest_name }}" #"{{ vm_name }}"
             disk:
-              - size_gb: 1 #"{{ vm_disk_size_gb }}"
-                #datastore: "{{ item.datastore }}"
-                type: thick #"{{ vm_disk_type }}"
-                datastore: "corro-datastore2" #"{{ item.datastore }}" #"{{ vm_disk_datastore }}"
-                scsi_controller: 1 #"{{ vm_disk_scsi_controller }}"
-                scsi_type: paravirtual #"{{ vm_disk_scsi_type }}"
-                unit_number: 1 #"{{ vm_disk_scsi_unit }}"                
-                disk_mode: persistent #"{{ vm_disk_mode }}"
+              - size_gb: "{{ vm_disk_size_gb }}"
+                type: "{{ vm_disk_type }}"
+                datastore: "{{ vm_disk_datastore }}"
+                scsi_controller: "{{ vm_disk_scsi_controller }}"
+                scsi_type: "{{ vm_disk_scsi_type }}"
+                unit_number: "{{ vm_disk_scsi_unit }}"                
+                disk_mode: "{{ vm_disk_mode }}"            
+              # - size_gb: 1 #"{{ vm_disk_size_gb }}"
+              #   #datastore: "{{ item.datastore }}"
+              #   type: thick #"{{ vm_disk_type }}"
+              #   datastore: "corro-datastore2" #"{{ item.datastore }}" #"{{ vm_disk_datastore }}"
+              #   scsi_controller: 1 #"{{ vm_disk_scsi_controller }}"
+              #   scsi_type: paravirtual #"{{ vm_disk_scsi_type }}"
+              #   unit_number: 1 #"{{ vm_disk_scsi_unit }}"                
+              #   disk_mode: persistent #"{{ vm_disk_mode }}"
                 state: present
           with_items:
             - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
           vars:
             query: "[?guest_name=='{{ vm_name }}']"                
           register: vm_add_disk
-
 
         - name: powering on guest
           community.vmware.vmware_guest_powerstate:

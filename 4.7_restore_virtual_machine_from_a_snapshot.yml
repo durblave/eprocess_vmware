@@ -3,12 +3,14 @@
   hosts: localhost
   connection: local
   gather_facts: no
-  vars:
-    vm_name: "Unifi Wifi Controller 7.1"
-    vm_snapshot: "Ansible Managed Snapshot - 1668982858"
+  # vars:
+  #   vm_name: "Unifi Wifi Controller 7.1"
+  #   vm_snapshot: "Ansible Managed Snapshot - 1668982858"
+  #   vm_folder:
+  #   vcenter_datacenter:
 
   tasks:
-    - name: creating vm snapshot
+    - name: restoring virtual machine from snapshot
       block:
         - name: Getting state of all virtual machines
           community.vmware.vmware_vm_info:
@@ -45,11 +47,16 @@
 
         - name: restoring a virtual machine snapshot
           vmware_guest_snapshot:
-            datacenter: "{{ item.datacenter }}"
-            name: "{{ item.guest_name }}"
+            datacenter: "{{ vcenter_datacenter }}"
+            name: "{{ vm_name }}"
             state: revert
             snapshot_name: "{{ vm_snapshot }}"
-            folder: "{{ item.folder }}"
+            folder: "{{ vm_folder }}"          
+            # datacenter: "{{ item.datacenter }}" # "{{ vcenter_datacenter }}"
+            # name: "{{ item.guest_name }}"
+            # state: revert
+            # snapshot_name: "{{ vm_snapshot }}"
+            # folder: "{{ item.folder }}"
           with_items:
             - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
           vars:
