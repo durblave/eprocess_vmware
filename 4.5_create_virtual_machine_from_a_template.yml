@@ -41,5 +41,12 @@
             template: "{{ vm_template }}"
             datacenter: "{{ vm_datacenter }}"
             folder: "{{ vm_folder }}"
+            datastore: "{{ vm_datastore }}"
+            networks:
+              ip: "{{ vm_net_ip }}"
+              netmask: "{{ vm_net_netmask }}"
+              type: "{{ vm_net_type }}" # DHCP/STATIC
+              vlan: "{{ vm_net_vlan }}"
             state: poweredoff
+
           
