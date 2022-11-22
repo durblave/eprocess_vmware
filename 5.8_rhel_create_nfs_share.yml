@@ -1,0 +1,42 @@
+---
+- name: 5.8 - Create NFS Share
+  hosts: nfs-server
+  become: yes
+  vars:
+    nfs_share_directory_path:
+    nfs_share_owner:
+    nfs_share_group:
+
+  tasks:
+    - name: install nfs-utils
+      yum:
+        name: nfs-utils
+        state: latest
+
+    - name: ensure NFS services are enabled rpcbind nfslock nfs
+      service:
+        name: "{{ item }}"
+        enabled: yes
+      with_items:
+        - rpcbind
+        - nfslock
+        - nfs
+
+    - name: Create NFS mount directory if it does not exist
+      file:
+        path: "{{ nfs_share_directory_path }}"
+        state: directory
+        owner: "{{ nfs_share_owner }}"
+        group: "{{ nfs_share_group }}"
+        mode: '0775'
+### filesystem and ip address of the master
+    - name: Copy exports file.
+      template:
+        src: ./ansible/exports.j2
+        dest: /etc/exports
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: NFS apply change configrue
+      shell: systemctl reload nfs;exportfs -a

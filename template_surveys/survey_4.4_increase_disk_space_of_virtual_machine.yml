@@ -24,7 +24,7 @@ spec:
       - "1"
       - "2"
       - "3"    
-    default: ""  
+    default: "0"  
   - type:  multiplechoice
     question_name: "Select type of scsi controller"
     question_description: "Type of SCSI controller. This value is required only for the first occurrence of SCSI Controller."
@@ -35,7 +35,7 @@ spec:
       - "lsilogic"
       - "lsilogicsas"
       - "paravirtual"
-    default: ""
+    default: "paravirtual"
   - type: integer
     question_name: "Enter disk unit number"
     question_description: "Disk Unit Number."

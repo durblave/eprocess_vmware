@@ -36,7 +36,7 @@ spec:
       - "1"
       - "2"
       - "3"    
-    default: ""  
+    default: "0"  
   - type:  multiplechoice
     question_name: "Select disk mode"
     question_description: "The type of disk, if not specified then use thick type for new disk, no eagerzero."
@@ -48,7 +48,7 @@ spec:
       - "thick"
       - "rdm"      
       - "vpmemdisk"      
-    default: "persistent"    
+    default: "thin"    
   - type:  multiplechoice
     question_name: "Select type of scsi controller"
     question_description: "Type of SCSI controller. This value is required only for the first occurrence of SCSI Controller."
@@ -59,7 +59,7 @@ spec:
       - "lsilogic"
       - "lsilogicsas"
       - "paravirtual"
-    default: ""
+    default: "paravirtual"
   - type: integer
     question_name: "Enter disk unit number"
     question_description: "Disk Unit Number."
@@ -76,16 +76,3 @@ spec:
       - "independent_persistent"
       - "dependent_persistent"
     default: "persistent"
-
-
-
-  # vars:
-  #   vm_name: "Unifi Wifi Controller 7.1"
-  #   vcenter_datacenter:
-  #   vm_disk_size_gb:
-  #   vm_disk_type: 
-  #   vm_disk_datastore:
-  #   vm_disk_scsi_controller:
-  #   vm_disk_scsi_type:
-  #   vm_disk_scsi_unit:
-  #   vm_disk_mode:
