@@ -1,0 +1,26 @@
+---
+- name: 4.0 - vmware test connectivity
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  tasks:
+    - name: Test connectivity to vmware environment
+      block:
+        - name: Reading state of all virtual machines
+          community.vmware.vmware_vm_info:
+          delegate_to: localhost
+          register: vm_info
+
+        - name: Displaying all poweredoff virtual machines from inventory and disk
+          debug:
+            var: vm_info.virtual_machines
+          # community.vmware.vmware_guest:
+          #   uuid: "{{ item.uuid }}"
+          #   delete_from_inventory: True
+          #   state: absent
+          # with_items:
+          #   - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
+          # vars:
+          #   query: "[?power_state=='poweredOff']"
+          # register: result
