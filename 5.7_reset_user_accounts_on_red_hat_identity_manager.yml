@@ -1,0 +1,18 @@
+---
+- name: 5.7- Reset user accounts on Red Hat Identity Manager
+  hosts: all
+  gather_facts: yes
+  become: yes
+  vars:
+    # - name: user
+    #   prompt: "User"
+    #   private: no
+  gather_facts:
+  become: true
+
+  tasks:
+    - name: Reset user password
+      shell: chuser account_locked=false "{{ user }}" && chsec -f /etc/security/lastlog -a "unsuccessful_login_count=0" -s "user" && echo "{{ user }}:123" | chpasswd
+
+    - name: Adding to AuthUsers group
+      shell: usermod -G `id -nG "{{ user }}" | tr " " ","`, AuthUsers "{{ user }}"

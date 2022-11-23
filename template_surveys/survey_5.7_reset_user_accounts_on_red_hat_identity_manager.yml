@@ -1,0 +1,10 @@
+---
+name:  5.7- Reset user accounts on Red Hat Identity Manager - Survey
+description:  5.7- Reset user accounts on Red Hat Identity Manager - Survey
+spec:
+  - type: text
+    question_name: "Enter username to reset password"
+    question_description: "Username for the account to reset"
+    variable: user
+    required: true
+    default: ""
