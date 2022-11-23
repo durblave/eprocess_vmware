@@ -1,0 +1,31 @@
+---
+name:  5.8 - Create NFS Share - Survey
+description:  5.8 - Create NFS Share - Survey
+spec:
+  - type: text
+    question_name: "Enter path of the NFS share"
+    question_description: "Path of the NFS share"
+    variable: nfs_share_directory_path
+    required: true
+    default: ""
+  - type: multiplechoice
+    question_name: "Select permission for the share"
+    question_description: "NFS share permissions"
+    variable: share_permissions
+    required: true
+    choices:
+      - "rw"
+      - "ro"
+    default: "ro"      
+  - type: text
+    question_name: "Enter group owning the share"
+    question_description: "Group of the NFS share owner"
+    variable: nfs_share_group
+    required: true
+    default: ""
+  - type: text
+    question_name: "Enter username owning the share"
+    question_description: "Username of the NFS share owner"
+    variable: nfs_share_owner
+    required: true
+    default: ""    

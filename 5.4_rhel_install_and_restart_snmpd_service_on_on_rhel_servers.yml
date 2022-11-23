@@ -1,9 +1,7 @@
 ---
-#RHEL - install and restart snmpd service on all RHEL servers
 - name: 5.4 - RHEL - install and restart snmpd service on all RHEL servers
-  hosts: all #"{{ target_server }}"
+  hosts: all 
   gather_facts: true
-  #remote_user: test
   tasks:
     - name: Check reachability
       ansible.builtin.ping: 
@@ -13,23 +11,11 @@
       block:
         - name: Installing snmpd service
           yum:
-          #ansible.builtin.package:
             name:
               - net-snmp
               - net-snmp-utils
               - net-snmp-devel
             state: latest
-          #when: ansible_distribution_major_version == '7'
-               
-        # - name: Installing snmpd service
-        #   ansible.builtin.package:
-        #     name:
-        #       - net-snmp
-        #       - net-snmp-utils
-        #       - net-snmp-devel
-        #     use: dnf
-        #     state: latest
-        #   when: ansible_distribution_major_version == '8'
 
         - name: Enabling and starting SNMPD service
           ansible.builtin.service:

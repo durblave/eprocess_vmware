@@ -2,15 +2,19 @@
 - name: 5.8 - Create NFS Share
   hosts: nfs-server
   become: yes
-  vars:
-    nfs_share_directory_path:
-    nfs_share_owner:
-    nfs_share_group:
+  # vars:
+  #   nfs_share_directory_path:
+  #   nfs_share_owner:
+  #   nfs_share_group:
+  #   share_permissions:
+  #   nfs_server:
 
   tasks:
     - name: install nfs-utils
       yum:
-        name: nfs-utils
+        name: 
+          - nfs-utils
+          - policycoreutils-python
         state: latest
 
     - name: ensure NFS services are enabled rpcbind nfslock nfs
@@ -28,15 +32,35 @@
         state: directory
         owner: "{{ nfs_share_owner }}"
         group: "{{ nfs_share_group }}"
-        mode: '0775'
-### filesystem and ip address of the master
-    - name: Copy exports file.
-      template:
-        src: ./ansible/exports.j2
-        dest: /etc/exports
-        owner: root
-        group: root
-        mode: 0644
+        mode: '0777'
+
+    - name: Ensure the default Apache port is 8080
+      ansible.builtin.lineinfile:
+        path: /etc/exports
+        line: "{{ nfs_share_directory_path }} {{ item }}({{ share_permissions }})"
+
+    - name: Set selinux context for "{{ nfs_share_directory_path }}" to nfs_t
+      community.general.sefcontext:
+        target: "{{ nfs_share_directory_path }}"
+        setype: nfs_t
+        state: present
+
+    - name: Enabling and starting NFS
+      service:
+        name: nfs-server
+        enabled: yes
+        state: started
+
+    - name: Updating firewall rules to allow NFS
+      firewalld:
+        permanent: yes
+        immediate: yes
+        service: "{{ item }}"
+        state: enabled
+      with_items:
+      - nfs
+      - mountd
+      - rpc-bind
 
     - name: NFS apply change configrue
       shell: systemctl reload nfs;exportfs -a

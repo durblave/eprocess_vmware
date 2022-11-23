@@ -1,0 +1,19 @@
+---
+name:  5.2_rhel_clear_non_relevant_log_files_in_var - Survey
+description:  5.2_rhel_clear_non_relevant_log_files_in_var - Survey
+spec:
+  - type: multiplechoice
+    question_name: "Select path to search"
+    question_description: "Path in which to search for files"
+    variable: path_to_search
+    required: true
+    choices:
+      - /var/
+      - /var/log/
+    default: "/var/log/"    
+  - type: text
+    question_name: "Enter files to delete"
+    question_description: "Eneter file names (wild cards accespted)"
+    variable: find_patterns_list
+    required: true
+    default: ""

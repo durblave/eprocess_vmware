@@ -146,28 +146,28 @@
       register: amprevalidate
       ignore_errors: true
 
-    - name: Start the AdminServer
-      tags: startadminserver
-      become: yes
-      become_user: weblogic
-      shell: "./startWebLogic.sh > adminserver.log &"
-      args:
-        chdir: "{{oracle_home}}/domains/{{domain_name}}/bin/"
-      register: startadminserver
-      run_once: yes
-      when: ansible_hostname == "{{ groups['app'][0] }}" and amprevalidate is failed
-      environment:
-              USER_MEM_ARGS: "-Djava.security.egd=file:/dev/./urandom"
+    # - name: Start the AdminServer
+    #   tags: startadminserver
+    #   become: yes
+    #   become_user: weblogic
+    #   shell: "./startWebLogic.sh > adminserver.log &"
+    #   args:
+    #     chdir: "{{oracle_home}}/domains/{{domain_name}}/bin/"
+    #   register: startadminserver
+    #   run_once: yes
+    #   when: ansible_hostname == "{{ groups['app'][0] }}" and amprevalidate is failed
+    #   environment:
+    #           USER_MEM_ARGS: "-Djava.security.egd=file:/dev/./urandom"
 
-    - name: wait for the adminserver to start and open the port 
-      tags: amvalidate
-      wait_for:
-        host: "{{groups['app'][0]}}"
-        port: "{{admin_ListenPort}}"
-        delay: 10
-        timeout: 120
-        state: started
-      when: ansible_hostname == "{{groups['app'][0]}}"
+    # - name: wait for the adminserver to start and open the port 
+    #   tags: amvalidate
+    #   wait_for:
+    #     host: "{{groups['app'][0]}}"
+    #     port: "{{admin_ListenPort}}"
+    #     delay: 10
+    #     timeout: 120
+    #     state: started
+    #   when: ansible_hostname == "{{groups['app'][0]}}"
 
     - name: Map Resources - Cluster and Machine
       tags: mapresources

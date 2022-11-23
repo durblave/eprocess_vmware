@@ -1,11 +1,8 @@
 ---
 - name: 5.2 - RHEL - clear non-relevant log files in /var
-  hosts: all #"{{ search_hosts }}"
+  hosts: all
   gather_facts: true
-
-  # vars:
-  #   search_hosts:
-  #   find_patterns_list
+  become: true
 
   tasks:
     - name: Check reachability
@@ -15,9 +12,8 @@
       block:
         - name: Finding files for deletion
           find:
-            paths: /var # "{{ find_paths_list }}"
-            patterns: "{{ find_patterns_list }}"
-            #use:regex: true
+            paths: "{{ path_to_search.split('\n') }}"
+            patterns: "{{ find_patterns_list.split('\n') }}"
             hidden: true
             file_type: any
             recurse: true
@@ -32,5 +28,4 @@
             path: "{{ item.path }}"
             state: absent
           with_items: "{{ find_results.files }}"
-      #when: "'success' in reachability.stdout"
 
