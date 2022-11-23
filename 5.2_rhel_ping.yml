@@ -1,11 +1,7 @@
 ---
 - name: 5.2 - RHEL - ping host
-  hosts: all #"{{ search_hosts }}"
+  hosts: all 
   gather_facts: true
-
-  # vars:
-  #   search_hosts:
-  #   find_patterns_list
 
   tasks:
     - name: Check reachability

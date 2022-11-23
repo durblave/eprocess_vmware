@@ -20,7 +20,7 @@
 
     - name: Extract WindowsDefenderATPOnboardingPackage.zip into /etc/opt/microsoft/mdatp
       unarchive:
-        src: WindowsDefenderATPOnboardingPackage.zip
+        src: files/WindowsDefenderATPOnboardingPackage.zip
         dest: /etc/opt/microsoft/mdatp
         mode: 0600
         owner: root
