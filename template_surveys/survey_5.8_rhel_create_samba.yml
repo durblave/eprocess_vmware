@@ -37,22 +37,22 @@ spec:
     question_description: "Username of the Samba share owner"
     variable: smb_share_owner
     required: true
-    default: "test_user"    
+    default: "root"    
   - type: text
     question_name: "Enter username owning the share"
     question_description: "Username of the Samba share owner"
     variable: smb_share_group
     required: true
-    default: "test_group"
+    default: "root"
   - type: text
     question_name: "Enter list of allowed users (comma seperated)"
     question_description: "list of samba valid users"
     variable: smb_valid_users
     required: true
-    default: "test1,test2"     
+    default: "root,durblave"     
   - type: text
     question_name: "Enter list of write users (comma seperated)"
     question_description: "list of samba write users"
     variable: smb_share_write_list
     required: true
-    default: "test1,test2"               
+    default: "root,durblave"     
