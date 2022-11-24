@@ -36,7 +36,7 @@
             dest: /opt/"{{ cluster }}"/switch.properties
             # owner: appuser
             # group: appuser
-          delegate_to: hostvars[inventory_hostname]['ansible_default_ipv4']['address']
+          delegate_to: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
 
         # - name: starting ucp gateway service
         #   service:
