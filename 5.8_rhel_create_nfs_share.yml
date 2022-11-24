@@ -36,7 +36,7 @@
 
     - name: Create list from variables
       set_fact:
-        nfs_clients: "[{{ nfs_client_list.split(',') }}]"
+        nfs_clients: "{{ nfs_client_list.split(',') }}"
 
     - name: show list
       debug:
