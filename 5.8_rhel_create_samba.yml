@@ -61,7 +61,7 @@
         block: |
           "[{{ samba_share_name }}]"
             comment = "{{ smb_share_comment }}"
-            path = "{{ samba_share_directory_path }}"
+            path = "{{ smb_share_directory_path }}"
             guest ok = "{{ smb_guest_allowed }}"
             read only =  "{{ smb_share_read_only }}"
             valid users = "{{ smb_valid_users }}"
