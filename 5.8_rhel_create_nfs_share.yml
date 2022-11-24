@@ -38,6 +38,8 @@
       ansible.builtin.lineinfile:
         path: /etc/exports
         line: "{{ nfs_share_directory_path }} {{ item }}({{ nfs_share_permissions }})"
+      with_items:
+        - {{ nfs_client_list.split('\n') }}
 
     - name: Set selinux context for "{{ nfs_share_directory_path }}" to nfs_t
       community.general.sefcontext:

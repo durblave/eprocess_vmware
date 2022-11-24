@@ -30,3 +30,13 @@ spec:
      - ro
      - rw
      - rw,no_root_squash
+  - type: multiplechoice
+    question_name: "NFS Clients IP Addresses"
+    question_description: "NFS Clients IP Addresses"
+    variable: nfs_client_list
+    required: true
+    default: 172.22.152.153
+    choices:
+     - 172.22.152.151
+     - 172.22.152.152
+     - 172.22.152.153
