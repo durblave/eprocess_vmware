@@ -59,7 +59,7 @@
         path: /etc/smb.conf
         marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->"
         block: |
-          "[{{ samba_share_name }}]"
+          "[{{ smb_share_name }}]"
             comment = "{{ smb_share_comment }}"
             path = "{{ smb_share_directory_path }}"
             guest ok = "{{ smb_guest_allowed }}"
