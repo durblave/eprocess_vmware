@@ -34,7 +34,7 @@
         group: "{{ nfs_share_group }}"
         mode: '0777'
 
-    - name: Ensure the default Apache port is 8080
+    - name: Ensure including NFS client address in exports config
       ansible.builtin.lineinfile:
         path: /etc/exports
         line: "{{ nfs_share_directory_path }} {{ item }}({{ nfs_share_permissions }})"
