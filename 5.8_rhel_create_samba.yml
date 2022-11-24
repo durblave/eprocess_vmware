@@ -48,25 +48,25 @@
         group: "{{ smb_share_group }}"
         mode: 0777
 
-    # - name: Set selinux context for "{{ smb_share_directory_path }}" to samba_share_t
-    #   sefcontext:
-    #     target: "{{ smb_share_directory_path }}"
-    #     setype: samba_share_t
-    #     state: present
+    - name: Set selinux context for "{{ smb_share_directory_path }}" to samba_share_t
+      sefcontext:
+        target: "{{ smb_share_directory_path }}"
+        setype: samba_share_t
+        state: present
 
-    # - name: Configure samba share
-    #   ansible.builtin.blockinfile:
-    #     path: /etc/smb.conf
-    #     marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->"
-    #     block: |
+    - name: Configure samba share
+      ansible.builtin.blockinfile:
+        path: /etc/smb.conf
+        marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->"
+        block: |
 
-    #     ["{{ samba_share_name }}"]
-    #       comment = {{ smb_share_comment }}
-    #       path = {{ samba_share_directory_path }}
-    #       guest ok = {{ smb_guest_allowed }}
-    #       read only =  {{ smb_share_read_only }}
-    #       valid users = {{ smb_valid_users }}
-    #       write list = {{ smb_share_write_list }}
+        "[{{ samba_share_name }}]"
+          comment = "{{ smb_share_comment }}"
+          path = "{{ samba_share_directory_path }}"
+          guest ok = "{{ smb_guest_allowed }}"
+          read only =  "{{ smb_share_read_only }}"
+          valid users = "{{ smb_valid_users }}"
+          write list = "{{ smb_share_write_list }}"
 
     - name: Updating firewall rules to allow Samba traffic
       firewalld:
