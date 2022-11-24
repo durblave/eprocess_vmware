@@ -40,3 +40,46 @@ spec:
      - 172.22.152.151
      - 172.22.152.152
      - 172.22.152.153
+
+# ---
+# name: 5.8_rhel_create_nfs_share-Survey
+# description: 5.8_rhel_create_nfs_share-Survey
+# spec:
+#   - type: text
+#     question_name: "Enter NFS Share Path"
+#     question_description: "Enter NFS Share Path"
+#     variable: nfs_share_directory_path
+#     required: true
+#     default: /opt/CESA_1_SWIG
+#   - type: text
+#     question_name: "Enter NFS Share Owner"
+#     question_description: "Enter NFS Share Owner"
+#     variable: nfs_share_owner
+#     required: true
+#     default: root
+#   - type: text
+#     question_name: "NFS Share Group"
+#     question_description: "NFS Share Group"
+#     variable: nfs_share_group
+#     required: true 
+#     default: root
+#   - type: multiplechoice
+#     question_name: "NFS Share Permissions"
+#     question_description: "NFS Share Permissions"
+#     variable: nfs_share_permissions
+#     required: true
+#     default: ro
+#     choices:
+#      - ro
+#      - rw
+#      - rw,no_root_squash
+#   - type: multiplechoice
+#     question_name: "NFS Clients IP Addresses"
+#     question_description: "NFS Clients IP Addresses"
+#     variable: nfs_client_list
+#     required: true
+#     default: 172.22.152.153
+#     choices:
+#      - 172.22.152.151
+#      - 172.22.152.152
+#      - 172.22.152.153

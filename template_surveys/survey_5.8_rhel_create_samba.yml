@@ -31,28 +31,28 @@ spec:
     question_description: "Share comment"
     variable: smb_share_comment
     required: true
-    default: ""
+    default: "Test comment"
   - type: text
     question_name: "Enter username owning the share"
     question_description: "Username of the Samba share owner"
     variable: nfs_share_owner
     required: true
-    default: ""    
+    default: "test_user"    
   - type: text
     question_name: "Enter username owning the share"
     question_description: "Username of the Samba share owner"
     variable: nfs_share_group
     required: true
-    default: ""
+    default: "test_group"
   - type: text
     question_name: "Enter list of allowed users (comma seperated)"
     question_description: "list of samba valid users"
     variable: smb_valid_users
     required: true
-    default: ""     
+    default: "test1,test2"     
   - type: text
     question_name: "Enter list of write users (comma seperated)"
     question_description: "list of samba write users"
     variable: smb_share_write_list
     required: true
-    default: ""               
+    default: "test1,test2"               
