@@ -60,8 +60,8 @@
         service: "{{ item }}"
         state: enabled
       with_items:
-      - nfs-server
-      #- mountd
+      - nfs
+      - mountd
       - rpc-bind
 
     - name: NFS apply change configrue

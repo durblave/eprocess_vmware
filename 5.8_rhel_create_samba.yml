@@ -56,7 +56,7 @@
         marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->"
         block: |
 
-        [{{ samba_share_name }}]
+        ["{{ samba_share_name }}"]
           comment = {{ smb_share_comment }}
           path = {{ samba_share_directory_path }}
           guest ok = {{ smb_guest_allowed }}
