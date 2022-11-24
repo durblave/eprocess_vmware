@@ -40,7 +40,7 @@
 
     - name: show list
       debug:
-        msg: "{{ item }}"
+        msg: "/var/{{ item }}/test"
       loop:
         - "{{ nfs_clients }}"
 
