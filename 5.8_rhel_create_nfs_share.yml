@@ -42,7 +42,7 @@
       debug:
         msg: "/var/{{ item }}/test"
       loop:
-        - "{{ nfs_clients.split(',') }}"
+        - "{{ nfs_clients | list }}"
 
     # - name: Ensure including NFS client address in exports config
     #   ansible.builtin.lineinfile:
