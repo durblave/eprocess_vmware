@@ -7,13 +7,13 @@ spec:
     question_description: "Enter NFS Share Path"
     variable: nfs_share_directory_path
     required: true
-    default: 
+    default: ""
   - type: text
     question_name: "Enter NFS Share Owner"
     question_description: "Enter NFS Share Owner"
     variable: nfs_share_owner
     required: true
-    default: 
+    default: ""
   - type: text
     question_name: "NFS Share Group"
     question_description: "NFS Share Group"
