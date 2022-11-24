@@ -41,7 +41,7 @@
     - name: show list
       debug:
         msg: "/var/{{ item }}/test"
-      loop:
+      with_items:
         - "{{ nfs_clients | list }}"
 
     # - name: Ensure including NFS client address in exports config
