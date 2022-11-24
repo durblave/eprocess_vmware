@@ -14,7 +14,7 @@
       yum:
         name: 
           - nfs-utils
-          - policycoreutils-python
+          - policycoreutils-python-utils
         state: latest
 
     - name: ensure NFS services are enabled rpcbind nfslock nfs
