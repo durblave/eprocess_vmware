@@ -1,6 +1,6 @@
 ---
 - name: 5.8 - Create NFS Share
-  hosts: nfs-server
+  hosts: all
   become: yes
   # vars:
   #   nfs_share_directory_path:
