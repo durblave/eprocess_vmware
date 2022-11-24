@@ -32,8 +32,9 @@
 
         - name: switching UCP gateway in use
           copy:
-            remote_src: /opt/{{ cluster }}/{{ gateway }}
+            src: /opt/{{ cluster }}/{{ gateway }}
             dest: /opt/{{ cluster }}/switch.properties
+            remote_src: true
             # owner: appuser
             # group: appuser
           #delegate_to: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
