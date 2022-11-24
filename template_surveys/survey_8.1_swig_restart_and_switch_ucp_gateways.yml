@@ -7,13 +7,13 @@ spec:
     question_description: "Gateway Cluster Name"
     variable: cluster
     required: true
-    default: "CESA_1_SWIG"
+    default: CESA_1_SWIG
   - type: multiplechoice
     question_name: "Enter Gateway"
     question_description: "UCP Gateway"
     variable: gateway
     required: true
     choices:
-      - "switch.properties-acdc"
-      - "switch.properties-ladc"
-    default: "switch.properties-acdc"             
+      - switch.properties-acdc
+      - switch.properties-ladc
+    default: switch.properties-acdc
