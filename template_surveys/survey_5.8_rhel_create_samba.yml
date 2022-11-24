@@ -35,13 +35,13 @@ spec:
   - type: text
     question_name: "Enter username owning the share"
     question_description: "Username of the Samba share owner"
-    variable: nfs_share_owner
+    variable: smb_share_owner
     required: true
     default: "test_user"    
   - type: text
     question_name: "Enter username owning the share"
     question_description: "Username of the Samba share owner"
-    variable: nfs_share_group
+    variable: smb_share_group
     required: true
     default: "test_group"
   - type: text
