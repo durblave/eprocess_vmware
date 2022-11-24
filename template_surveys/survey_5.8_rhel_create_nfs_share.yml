@@ -7,19 +7,19 @@ spec:
     question_description: "Enter NFS Share Path"
     variable: nfs_share_directory_path
     required: true
-    default: ""
+    default: /opt/CESA_1_SWIG
   - type: text
     question_name: "Enter NFS Share Owner"
     question_description: "Enter NFS Share Owner"
     variable: nfs_share_owner
     required: true
-    default: ""
+    default: root
   - type: text
     question_name: "NFS Share Group"
     question_description: "NFS Share Group"
     variable: nfs_share_group
     required: true 
-    default: ""    
+    default: root
   - type: multiplechoice
     question_name: "NFS Share Permissions"
     question_description: "NFS Share Permissions"
