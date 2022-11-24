@@ -1,0 +1,65 @@
+---
+- name: 8.1 - SWIG stop, switch and restart gateway
+  hosts: all
+  gather_facts: true
+
+  tasks:
+    - name: Check host reachability
+      ping:
+      register: reachability
+
+    - name: starting gateway switching process
+      block:
+
+        # - name: stop ucp gateway service
+        #   service:
+        #     name: swig-gateway
+        #     state: stopped
+        #     enabled: true
+        - name: create config directory for testing
+          file:
+            path: /opt/"{{ cluster }}"
+            state: directory
+
+        - name: create config files for testing
+          file:
+            path: /opt/"{{ cluster }}"/"{{ item }}"
+            state: touch
+          with_items:
+            - "switch.properties"
+            - "switch.properties-acdc"
+            - "switch.properties-ladc"
+
+        - name: switching UCP gateway in use
+          copy:
+            src: /opt/"{{ cluster }}"/"{{ gateway }}"
+            dest: /opt/"{{ cluster }}"/switch.properties
+            # owner: appuser
+            # group: appuser
+          delegate_to: hostvars[inventory_hostname]['ansible_default_ipv4']['address']
+
+        # - name: starting ucp gateway service
+        #   service:
+        #     name: swig.gateway
+        #     state: started
+        #     enabled: true
+
+        # - name: Finding files for deletion
+        #   find:
+        #     paths: "{{ path_to_search.split('\n') }}"
+        #     patterns: "{{ find_patterns_list.split('\n') }}"
+        #     hidden: true
+        #     file_type: any
+        #     recurse: true
+        #   register: find_results
+
+        # - name: Listing files to be deleted.
+        #   debug:
+        #     var: find_results.files
+
+        # - name: deleting files from find results
+        #   file:
+        #     path: "{{ item.path }}"
+        #     state: absent
+        #   with_items: "{{ find_results.files }}"
+

@@ -1,0 +1,19 @@
+---
+name:  8.1_swig_restart_and_switch_ucp_gateways - Survey
+description:  8.1_swig_restart_and_switch_ucp_gateways - Survey
+spec:
+  - type: text
+    question_name: "Enter cluster name"
+    question_description: "Gateway Cluster Name"
+    variable: cluster
+    required: true
+    default: "CESA_1_SWIG"
+  - type: multiplechoice
+    question_name: "Enter Gateway"
+    question_description: "UCP Gateway"
+    variable: gateway
+    required: true
+    choices:
+      - "switch.properties-acdc"
+      - "switch.properties-ladc"
+    default: "switch.properties-acdc"             
