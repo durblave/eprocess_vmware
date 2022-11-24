@@ -2,6 +2,7 @@
 - name: 5.8 - Create NFS Share
   hosts: all
   become: yes
+  gather_facts: false
   # vars:
   #   nfs_share_directory_path:
   #   nfs_share_owner:
@@ -10,21 +11,20 @@
   #   nfs_server:
 
   tasks:
-    - name: install nfs-utils
-      yum:
-        name: 
-          - nfs-utils
-          - policycoreutils-python-utils
-        state: latest
+    # - name: install nfs-utils
+    #   yum:
+    #     name: 
+    #       - nfs-utils
+    #       - policycoreutils-python-utils
+    #     state: latest
 
-    - name: ensure NFS services are enabled rpcbind nfslock nfs
-      service:
-        name: "{{ item }}"
-        enabled: yes
-      with_items:
-        - rpcbind
-        #- nfslock
-        - nfs-server
+    # - name: ensure NFS services are enabled rpcbind nfslock nfs
+    #   service:
+    #     name: "{{ item }}"
+    #     enabled: yes
+    #   with_items:
+    #     - rpcbind
+    #     - nfs-server
 
     - name: Create NFS mount directory if it does not exist
       file:
@@ -33,36 +33,47 @@
         owner: "{{ nfs_share_owner }}"
         group: "{{ nfs_share_group }}"
         mode: '0777'
+    - name: Create list from variables
+      set_fact:
+        nfs_clients: "[{{ nfs_client_list }}]"
 
-    - name: Ensure including NFS client address in exports config
-      ansible.builtin.lineinfile:
-        path: /etc/exports
-        line: "{{ nfs_share_directory_path }} {{ item }}({{ nfs_share_permissions }})"
-      with_items:
-        - "{{ nfs_client_list.split('\n') }}"
+    - name: show list
+      debug:
+        msg: "{{ item }}"
+      loop:
+        - "{{ nfs_clients }}"
 
-    - name: Set selinux context for "{{ nfs_share_directory_path }}" to nfs_t
-      community.general.sefcontext:
-        target: "{{ nfs_share_directory_path }}"
-        setype: nfs_t
-        state: present
+    # - name: Ensure including NFS client address in exports config
+    #   ansible.builtin.lineinfile:
+    #     path: /etc/exports
+    #     line: "{{ nfs_share_directory_path }} {{ item }}({{ nfs_share_permissions }})"
+    #   loop:
+    #     - "{{ nfs_clients }}"
+    #     #- "{{ nfs_client_list.split('\n') }}"
+    #     - 
 
-    - name: Enabling and starting NFS
-      service:
-        name: nfs-server
-        enabled: yes
-        state: started
+    # - name: Set selinux context for "{{ nfs_share_directory_path }}" to nfs_t
+    #   community.general.sefcontext:
+    #     target: "{{ nfs_share_directory_path }}"
+    #     setype: nfs_t
+    #     state: present
 
-    - name: Updating firewall rules to allow NFS
-      firewalld:
-        permanent: yes
-        immediate: yes
-        service: "{{ item }}"
-        state: enabled
-      with_items:
-      - nfs
-      - mountd
-      - rpc-bind
+    # - name: Enabling and starting NFS
+    #   service:
+    #     name: nfs-server
+    #     enabled: yes
+    #     state: started
 
-    - name: NFS apply change configrue
-      shell: systemctl reload nfs-server; exportfs -arv
+    # - name: Updating firewall rules to allow NFS
+    #   firewalld:
+    #     permanent: yes
+    #     immediate: yes
+    #     service: "{{ item }}"
+    #     state: enabled
+    #   with_items:
+    #   - nfs
+    #   - mountd
+    #   - rpc-bind
+
+    # - name: NFS apply change configrue
+    #   shell: systemctl reload nfs-server; exportfs -arv
