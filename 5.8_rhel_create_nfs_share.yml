@@ -37,7 +37,7 @@
     - name: Ensure the default Apache port is 8080
       ansible.builtin.lineinfile:
         path: /etc/exports
-        line: "{{ nfs_share_directory_path }} {{ item }}({{ share_permissions }})"
+        line: "{{ nfs_share_directory_path }} {{ item }}({{ nfs_share_permissions }})"
 
     - name: Set selinux context for "{{ nfs_share_directory_path }}" to nfs_t
       community.general.sefcontext:
