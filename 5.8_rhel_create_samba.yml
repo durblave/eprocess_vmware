@@ -44,11 +44,11 @@
         group: "{{ smb_share_group }}"
         mode: 0777
 
-    - name: Set selinux context for "{{ smb_share_directory_path }}" to samba_share_t
-      community.general.sefcontext:
-        target: "{{ smb_share_directory_path }}"
-        setype: samba_share_t
-        state: present
+    # - name: Set selinux context for "{{ smb_share_directory_path }}" to samba_share_t
+    #   sefcontext:
+    #     target: "{{ smb_share_directory_path }}"
+    #     setype: samba_share_t
+    #     state: present
 
     # - name: Configure samba share
     #   ansible.builtin.blockinfile:
