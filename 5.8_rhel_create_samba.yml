@@ -78,6 +78,6 @@
         - samba
         - samba-client
 
-    - name: validating samba configuration
-      shell: smbclient -L localhost -U "{{ smb_share_owner }}"
-      #delegate_to: inventory_hostname
+    # - name: validating samba configuration
+    #   shell: smbclient -L localhost -U "{{ smb_share_owner }}"
+    #   #delegate_to: inventory_hostname
