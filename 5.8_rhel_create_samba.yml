@@ -17,6 +17,9 @@
     - name: Check Samba Packages are present
       ansible.builtin.yum:
         name: 
+          - samba
+          - samba-common
+          - samba-winbind
           - cifs-utils
           - samba-client
           - policycoreutils-python-utils
@@ -28,8 +31,9 @@
         enabled: yes
         state: started
       with_items:
-        - "smb"
-        - "nmb"
+        - smb
+        - nmb
+        - winbind
         
     - name: Ensure SELinux is enabled and enforcing
       ansible.posix.selinux:
