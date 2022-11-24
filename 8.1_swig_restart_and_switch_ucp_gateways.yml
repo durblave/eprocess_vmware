@@ -18,22 +18,22 @@
         #     enabled: true
         - name: create config directory for testing
           file:
-            path: /opt/"{{ cluster }}"
+            path: /opt/{{ cluster }}
             state: directory
 
         - name: create config files for testing
           file:
-            path: /opt/"{{ cluster }}"/"{{ item }}"
+            path: /opt/{{ cluster }}/{{ item }}
             state: touch
           with_items:
-            - "switch.properties"
-            - "switch.properties-acdc"
-            - "switch.properties-ladc"
+            - switch.properties
+            - switch.properties-acdc
+            - switch.properties-ladc
 
         - name: switching UCP gateway in use
           copy:
-            remote_src: /opt/"{{ cluster }}"/"{{ gateway }}"
-            dest: /opt/"{{ cluster }}"/switch.properties
+            remote_src: /opt/{{ cluster }}/{{ gateway }}
+            dest: /opt/{{ cluster }}/switch.properties
             # owner: appuser
             # group: appuser
           #delegate_to: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
