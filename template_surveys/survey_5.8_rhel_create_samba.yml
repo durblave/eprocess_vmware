@@ -7,7 +7,7 @@ spec:
     question_description: "Path of the Samba share"
     variable: smb_share_directory_path
     required: true
-    default: ""
+    default: /opt/CESA_1_SWIG
   - type: multiplechoice
     question_name: "Are guests allowed to the share"
     question_description: "SMB guest permissions"
