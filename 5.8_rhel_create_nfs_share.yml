@@ -23,8 +23,8 @@
         enabled: yes
       with_items:
         - rpcbind
-        - nfslock
-        - nfs
+        #- nfslock
+        - nfs-server
 
     - name: Create NFS mount directory if it does not exist
       file:
@@ -58,9 +58,9 @@
         service: "{{ item }}"
         state: enabled
       with_items:
-      - nfs
-      - mountd
+      - nfs-server
+      #- mountd
       - rpc-bind
 
     - name: NFS apply change configrue
-      shell: systemctl reload nfs;exportfs -a
+      shell: systemctl reload nfs-server; exportfs -arv
