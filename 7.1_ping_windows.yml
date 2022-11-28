@@ -22,11 +22,11 @@
     - debug:
         msg: "{{ service_list.stdout.split('\n') }}"  
 
-    #   # Install and enable IIS on Windows server 2019
-    # - name: Install IIS
-    #   win_feature:
-    #     name: "Web-Server"
-    #     state: present
-    #     restart: yes
-    #     include_sub_features: yes
-    #     include_management_tools: yes      
+      # Install and enable IIS on Windows server 2019
+    - name: Install IIS
+      win_feature:
+        name: "Web-Server"
+        state: present
+        restart: yes
+        include_sub_features: yes
+        include_management_tools: yes      
