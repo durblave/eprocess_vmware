@@ -8,25 +8,25 @@
     - name: ping host
       ansible.windows.win_ping:
 
-    - name: Gather list
-      win_shell: Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall* | Select-Object DisplayName, DisplayVersion, Publisher, InstallDate | Format-Table â€“AutoSize
-      register: program_list
+    # - name: Gather list
+    #   win_shell: Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall* | Select-Object DisplayName, DisplayVersion, Publisher, InstallDate | Format-Table â€“AutoSize
+    #   register: program_list
 
-    - debug:
-      msg: "{{ program_list.stdout.split('\n') }}"
+    # - debug:
+    #   msg: "{{ program_list.stdout.split('\n') }}"
 
-    - name: Gather list
-      win_shell: Get-Service | Sort-Object Status -Descending
-      register: service_list
+    # - name: Gather list
+    #   win_shell: Get-Service | Sort-Object Status -Descending
+    #   register: service_list
 
-    - debug:
-        msg: "{{ service_list.stdout.split('\n') }}"  
+    # - debug:
+    #     msg: "{{ service_list.stdout.split('\n') }}"  
 
-      # Install and enable IIS on Windows server 2019
-    - name: Install IIS
-      win_feature:
-        name: "Web-Server"
-        state: present
-        restart: yes
-        include_sub_features: yes
-        include_management_tools: yes      
+    #   # Install and enable IIS on Windows server 2019
+    # - name: Install IIS
+    #   win_feature:
+    #     name: "Web-Server"
+    #     state: present
+    #     restart: yes
+    #     include_sub_features: yes
+    #     include_management_tools: yes      
