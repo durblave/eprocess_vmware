@@ -1,0 +1,46 @@
+---
+- name: ping windows host
+  hosts: all
+  gather_facts: false
+  become: false
+
+  tasks:
+    - name: ping host
+      ansible.windows.win_ping:
+
+    - name: List all installed Programs
+      hosts: dev_env
+      tasks:
+        - name: Gather list
+          win_shell: Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall* | Select-Object DisplayName, DisplayVersion, Publisher, InstallDate | Format-Table â€“AutoSize
+          register: program_list
+
+        - debug:
+          msg: "{{ program_list.stdout.split('\n') }}"
+
+        - name: Gather list
+          win_shell: Get-Service | Sort-Object Status -Descending
+          register: service_list
+
+        - debug:
+            msg: "{{ service_list.stdout.split('\n') }}"  
+
+          # Install and enable IIS on Windows server 2019
+        - name: Install IIS
+          win_feature:
+            name: "Web-Server"
+            state: present
+            restart: yes
+            include_sub_features: yes
+            include_management_tools: yes
+
+        - name: Stop service Tomcat
+          win_service:
+            name: Tomcat8
+            state: stopped              
+
+          # Copy the index.html file and rename to ansible.html under C:\inetpub\wwwroot. Must use \\ instead of \ for accessing directory on Windows server.
+        - name: Copy index text page
+          win_copy:
+            src: "files/index.html"
+            dest: "C:\\inetpub\\wwwroot\\ansible.html"        
