@@ -1,0 +1,22 @@
+---
+- name: 4.9 - list powered off or failed virtual machines from vm inventory
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  tasks:
+    - name: Listing failed/powered-off virtual machines
+      block:
+        - name: Getting state of all virtual machines
+          community.vmware.vmware_vm_info:
+          delegate_to: localhost
+          register: vm_info
+
+        - name: Listing failed/poweredoff virtual machines from inventory
+          debug:
+            msg: "{{ item.guest_name }}"
+          with_items:
+            - "{{ vm_info.virtual_machines | community.general.json_query(query) }}"
+          vars:
+            query: "[?power_state!='poweredOn']"
+          register: result
