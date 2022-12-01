@@ -10,6 +10,22 @@
   #   vm_datacenter: ha-datacenter
 
   tasks:
+        - name: gather vm info
+          vmware_vm_info:
+            hostname: '{{ vcenter_hostname }}'
+            username: '{{ vcenter_username }}'
+            password: '{{ vcenter_password }}'
+            folder: "/datacenter/vm/folder"
+          delegate_to: localhost
+          register: vm_info
+
+        - debug:
+            msg: "{{ item.tags }}"
+          with_items:
+            - "{{ vm_info.virtual_machines | json_query(query) }}"
+          vars:
+            query: "[?guest_name=='DC0_H0_VM0']"   
+              
     - name: Creating virtual machine from template 
       block:
         - name: Getting state of all virtual machines
@@ -48,5 +64,7 @@
               type: "{{ vm_net_type }}" # DHCP/STATIC
               vlan: "{{ vm_net_vlan }}"
             state: poweredoff
+
+         
 
           

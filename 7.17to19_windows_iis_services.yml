@@ -68,9 +68,3 @@
       when: service_name not in win_svc_list
 
 
-
-
-      
-
-
-
