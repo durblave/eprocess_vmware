@@ -8,7 +8,7 @@
       ansible.builtin.lineinfile:
         path: /etc/dhcp/dhcpd.conf
         insertafter: '^\t#                              NETONE MDs OFFICE                            #\n'
-        line: '        subclass "netone-mds" 1:"{{ device_mac_address }}"; # {{ name }} {{ surname }} -- {{device_description}}'
+        line: '        subclass "netone-mds" 1:{{ device_mac_address }}; # {{ name }} {{ surname }} -- {{device_description}}'
       notify: 'Restarting services'
       when: device_wifi_group == 'MDs Office'
 
@@ -16,7 +16,7 @@
       ansible.builtin.lineinfile:
         path: /etc/dhcp/dhcpd.conf
         insertafter: '^\t#                              NETONE FINANCE                               #\n'
-        line: '        subclass "netone-finance" 1:"{{ device_nac_address }}"; # {{ name }} {{ surname }} -- {{device_description}}'
+        line: '        subclass "netone-finance" 1:{{ device_nac_address }}; # {{ name }} {{ surname }} -- {{device_description}}'
       notify: 'Restarting services'
       when: device_wifi_group == 'Finance'
 
@@ -24,7 +24,7 @@
       ansible.builtin.lineinfile:
         path: /etc/dhcp/dhcpd.conf
         insertafter: '^\t#                               NETONE SALES                                #\n'
-        line: '        subclass "netone-sales" 1:"{{ device_nac_address }}"; # {{ name }} {{ surname }} -- {{device_description}}'
+        line: '        subclass "netone-sales" 1:{{ device_nac_address }}; # {{ name }} {{ surname }} -- {{device_description}}'
       notify: 'Restarting services'
       when: device_wifi_group == 'Sales'
 
@@ -32,7 +32,7 @@
       ansible.builtin.lineinfile:
         path: /etc/dhcp/dhcpd.conf
         insertafter: '^\t#                                 NETONE CARTONS                            #\n'
-        line: '        subclass "netone-cartons" 1:"{{ device_nac_address }}"; # {{ name }} {{ surname }} -- {{device_description}}'
+        line: '        subclass "netone-cartons" 1:{{ device_nac_address }}; # {{ name }} {{ surname }} -- {{device_description}}'
       notify: 'Restarting services'
       when: device_wifi_group == 'Cartons'
 
@@ -40,7 +40,7 @@
       ansible.builtin.lineinfile:
         path: /etc/dhcp/dhcpd.conf
         insertafter: '^\t#                                NETONE GUESTS                              #\n'
-        line: '        subclass "netone-guests" 1:"{{ device_nac_address }}"; # {{ name }} {{ surname }} -- {{device_description}}'
+        line: '        subclass "netone-guests" 1:{{ device_nac_address }}; # {{ name }} {{ surname }} -- {{device_description}}'
       notify: 'Restarting services'
       when: device_wifi_group == 'Guest'              
 
