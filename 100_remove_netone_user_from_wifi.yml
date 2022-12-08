@@ -1,0 +1,19 @@
+---
+- name: Remove NETONE Wi-Fi user
+  hosts: all
+  gather_facts: true
+  become: true
+  tasks:
+    - name: 'Removing mac address  {{ device_mac_address }} from NETONE wifi'
+      ansible.builtin.lineinfile:
+        path: /etc/dhcp/dhcpd.conf
+        regexp: '{{ device_mac_address }}'
+        state: absent
+      notify: 'Restarting services'
+
+  handlers:
+    - name: 'Restarting services'
+      service:
+        name: dhcpd
+        state: restarted
+        enabled: true
