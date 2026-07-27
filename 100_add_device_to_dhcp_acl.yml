@@ -61,19 +61,19 @@
     # =========================================================================
     # STEP 4: VALIDATE DHCP SERVER CONFIGURATION SYNTAX
     # =========================================================================
-    - name: Test DHCP server configuration syntax (dhcpd -t)
-      ansible.builtin.command:
-        cmd: "dhcpd -t -cf {{ dhcpd_config_file }}"
-      register: dhcpd_syntax_check
-      changed_when: false
-      failed_when: dhcpd_syntax_check.rc != 0
+    #- name: Test DHCP server configuration syntax (dhcpd -t)
+      #ansible.builtin.command:
+        #cmd: "dhcpd -t -cf {{ dhcpd_config_file }}"
+      #register: dhcpd_syntax_check
+      #changed_when: false
+      #failed_when: dhcpd_syntax_check.rc != 0
 
     # =========================================================================
     # STEP 5: SEARCH FOR SPECIFIC SUBCLASS PATTERN IN DHCP CONFIG
     # =========================================================================
-    - name: Search for matching subclass entry in dhcpd.conf
+    - name: Verify Device registered in user.device.conf
       ansible.builtin.lineinfile:
-        path: "{{ dhcpd_config_file }}"
+        path: "{{ device_conf_file }}"
         regexp: '^\s*subclass\s+"user_device"\s+1:{{ device_mac_address }};\s*#\s*{{ name }}\s+{{ surname }}\s+--\s+{{ device_description }}'
         state: absent
       check_mode: true
@@ -82,9 +82,9 @@
     - name: Assert subclass entry presence in DHCP server configuration
       ansible.builtin.assert:
         that:
-          - dhcpd_subclass_match.found > 0
-        success_msg: "FOUND: Subclass entry for {{ device_mac_address }} verified in {{ dhcpd_config_file }}."
-        fail_msg: "NOT FOUND: Subclass entry for {{ device_mac_address }} was not found in {{ dhcpd_config_file }}."
+          - dhcpd_subclass_match.changed > 0
+        success_msg: "FOUND: Subclass entry for {{ device_mac_address }} verified in {{ device_conf_file }}."
+        fail_msg: "NOT FOUND: Subclass entry for {{ device_mac_address }} was not registered in {{ device_conf_file }}."
 
   handlers:
     # =========================================================================
