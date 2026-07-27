@@ -1,0 +1,103 @@
+---
+- name: Validate MAC, Ensure Absence, Append to Device Conf, and Check DHCP Config
+  hosts: netone
+  become: true
+  vars:
+    # Input variables for MAC address and device metadata
+    # mac_to_process: "00-1A-2B-3C-4D-5E"
+    # name: "John"
+    # surname: "Doe"
+    # device_description: "Work Laptop"
+
+    # Configuration file paths and service settings
+    device_conf_file: "user.device.conf"
+    dhcpd_config_file: "/etc/dhcp/dhcpd.conf"
+    dhcp_service_name: "dhcpd"
+
+  handlers:
+    # =========================================================================
+    # DHCP SERVER HANDLER
+    # =========================================================================
+    - name: Restart DHCP service
+      block:
+        - name: Test DHCP server configuration syntax prior to restart
+          ansible.builtin.command:
+            cmd: "dhcpd -t -cf {{ dhcpd_config_file }}"
+          changed_when: false
+
+        - name: Restart dhcpd system service
+          ansible.builtin.systemd:
+            name: "{{ dhcp_service_name }}"
+            state: restarted
+
+  tasks:
+    # =========================================================================
+    # STEP 1: VALIDATE MAC ADDRESS FORMAT
+    # =========================================================================
+    - name: Validate MAC address format using hwaddr filter
+      ansible.builtin.assert:
+        that:
+          - mac_to_process | ansible.utils.hwaddr is truthy
+        success_msg: "VALID: '{{ mac_to_process }}' is a valid MAC address."
+        fail_msg: "INVALID: '{{ mac_to_process }}' is not a valid MAC address format."
+
+    - name: Set converted Linux MAC address fact
+      ansible.builtin.set_fact:
+        device_mac_address: "{{ mac_to_process | ansible.utils.hwaddr('linux') }}"
+
+    # =========================================================================
+    # STEP 2: PRE-CHECK ABSENCE IN USER.DEVICE.CONF
+    # =========================================================================
+    - name: Check if MAC address already exists in user.device.conf
+      ansible.builtin.lineinfile:
+        path: "{{ device_conf_file }}"
+        regexp: '1:{{ device_mac_address }};'
+        state: absent
+      check_mode: true
+      register: existing_mac_check
+
+    - name: Assert MAC address is absent before proceeding
+      ansible.builtin.assert:
+        that:
+          - existing_mac_check.found == 0
+        success_msg: "CONFIRMED: MAC address {{ device_mac_address }} is absent from {{ device_conf_file }}."
+        fail_msg: "ABORT: MAC address {{ device_mac_address }} is ALREADY present in {{ device_conf_file }}."
+
+    # =========================================================================
+    # STEP 3: APPEND TO USER.DEVICE.CONF USING REQUIRED FORMAT
+    # =========================================================================
+    - name: Append subclass entry to user.device.conf
+      ansible.builtin.lineinfile:
+        path: "{{ device_conf_file }}"
+        line: '        subclass "user_device" 1:{{ device_mac_address }}; # {{ name }} {{ surname }} -- {{ device_description }}'
+        state: present
+        create: true
+      notify: Restart DHCP service
+
+    # =========================================================================
+    # STEP 4: VALIDATE DHCP SERVER CONFIGURATION SYNTAX
+    # =========================================================================
+    - name: Test DHCP server configuration syntax (dhcpd -t)
+      ansible.builtin.command:
+        cmd: "dhcpd -t -cf {{ dhcpd_config_file }}"
+      register: dhcpd_syntax_check
+      changed_when: false
+      failed_when: dhcpd_syntax_check.rc != 0
+
+    # =========================================================================
+    # STEP 5: SEARCH FOR SPECIFIC SUBCLASS PATTERN IN DHCP CONFIG
+    # =========================================================================
+    - name: Search for matching subclass entry in dhcpd.conf
+      ansible.builtin.lineinfile:
+        path: "{{ dhcpd_config_file }}"
+        regexp: '^\s*subclass\s+"user_device"\s+1:{{ device_mac_address }};\s*#\s*{{ name }}\s+{{ surname }}\s+--\s+{{ device_description }}'
+        state: absent
+      check_mode: true
+      register: dhcpd_subclass_match
+
+    - name: Assert subclass entry presence in DHCP server configuration
+      ansible.builtin.assert:
+        that:
+          - dhcpd_subclass_match.found > 0
+        success_msg: "FOUND: Subclass entry for {{ device_mac_address }} verified in {{ dhcpd_config_file }}."
+        fail_msg: "NOT FOUND: Subclass entry for {{ device_mac_address }} was not found in {{ dhcpd_config_file }}."
