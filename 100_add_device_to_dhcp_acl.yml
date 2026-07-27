@@ -10,7 +10,7 @@
     # device_description: "Work Laptop"
 
     # Configuration file paths and service settings
-    device_conf_file: "user.device.conf"
+    device_conf_file: "/etc/dhcp/user.device.conf"
     dhcpd_config_file: "/etc/dhcp/dhcpd.conf"
     dhcp_service_name: "dhcpd"
 
