@@ -14,22 +14,6 @@
     dhcpd_config_file: "/etc/dhcp/dhcpd.conf"
     dhcp_service_name: "dhcpd"
 
-  handlers:
-    # =========================================================================
-    # DHCP SERVER HANDLER
-    # =========================================================================
-    - name: Restart DHCP service
-      block:
-        - name: Test DHCP server configuration syntax prior to restart
-          ansible.builtin.command:
-            cmd: "dhcpd -t -cf {{ dhcpd_config_file }}"
-          changed_when: false
-
-        - name: Restart dhcpd system service
-          ansible.builtin.systemd:
-            name: "{{ dhcp_service_name }}"
-            state: restarted
-
   tasks:
     # =========================================================================
     # STEP 1: VALIDATE MAC ADDRESS FORMAT
@@ -101,3 +85,20 @@
           - dhcpd_subclass_match.found > 0
         success_msg: "FOUND: Subclass entry for {{ device_mac_address }} verified in {{ dhcpd_config_file }}."
         fail_msg: "NOT FOUND: Subclass entry for {{ device_mac_address }} was not found in {{ dhcpd_config_file }}."
+
+  handlers:
+    # =========================================================================
+    # DHCP SERVER HANDLER
+    # =========================================================================
+    - name: Restart DHCP service
+      block:
+        - name: Test DHCP server configuration syntax prior to restart
+          ansible.builtin.command:
+            cmd: "dhcpd -t -cf {{ dhcpd_config_file }}"
+          changed_when: false
+
+        - name: Restart dhcpd system service
+          ansible.builtin.systemd:
+            name: "{{ dhcp_service_name }}"
+            state: restarted
+        
