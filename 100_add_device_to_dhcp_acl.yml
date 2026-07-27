@@ -59,7 +59,7 @@
     - name: Assert MAC address is absent before proceeding
       ansible.builtin.assert:
         that:
-          - existing_mac_check.found == 0
+          - existing_mac_check.changed == 0
         success_msg: "CONFIRMED: MAC address {{ device_mac_address }} is absent from {{ device_conf_file }}."
         fail_msg: "ABORT: MAC address {{ device_mac_address }} is ALREADY present in {{ device_conf_file }}."
 
