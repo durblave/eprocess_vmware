@@ -1,6 +1,6 @@
 ---
 - name: Validate MAC, Ensure Absence, Append to Device Conf, and Check DHCP Config
-  hosts: netone
+  hosts: all
   become: true
   vars:
     # Input variables for MAC address and device metadata
