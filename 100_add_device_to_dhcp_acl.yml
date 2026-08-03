@@ -56,6 +56,7 @@
         line: '        subclass "user_device" 1:{{ device_mac_address }}; # {{ name }} {{ surname }} -- {{ device_description }}'
         state: present
         create: true
+      notify: Restart dhcpd system service
     #  notify: Test DHCP server configuration syntax prior to restart
 
     # =========================================================================
