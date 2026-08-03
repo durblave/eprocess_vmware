@@ -56,7 +56,7 @@
         line: '        subclass "user_device" 1:{{ device_mac_address }}; # {{ name }} {{ surname }} -- {{ device_description }}'
         state: present
         create: true
-      notify: Test DHCP server configuration syntax prior to restart
+    #  notify: Test DHCP server configuration syntax prior to restart
 
     # =========================================================================
     # STEP 4: VALIDATE DHCP SERVER CONFIGURATION SYNTAX
@@ -67,6 +67,13 @@
       #register: dhcpd_syntax_check
       #changed_when: false
       #failed_when: dhcpd_syntax_check.rc != 0
+    - name: Test DHCP server configuration syntax prior to restart
+      ansible.builtin.command:
+        cmd: "dhcpd -t -cf {{ dhcpd_config_file }}"
+      changed_when: false
+      failed_when: dhcpd_syntax_check.rc != 0
+      
+
 
     # =========================================================================
     # STEP 5: SEARCH FOR SPECIFIC SUBCLASS PATTERN IN DHCP CONFIG
@@ -85,6 +92,7 @@
           - dhcpd_subclass_match.changed > 0
         success_msg: "FOUND: Subclass entry for {{ device_mac_address }} verified in {{ device_conf_file }}."
         fail_msg: "NOT FOUND: Subclass entry for {{ device_mac_address }} was not registered in {{ device_conf_file }}."
+      notify: Restart dhcpd system service
 
   handlers:
     # =========================================================================
@@ -92,11 +100,11 @@
     # =========================================================================
     #- name: Restart DHCP service
       #block:
-    - name: Test DHCP server configuration syntax prior to restart
-      ansible.builtin.command:
-        cmd: "dhcpd -t -cf {{ dhcpd_config_file }}"
-      changed_when: false
-      notify: Restart dhcpd system service
+    #- name: Test DHCP server configuration syntax prior to restart
+    #  ansible.builtin.command:
+    #    cmd: "dhcpd -t -cf {{ dhcpd_config_file }}"
+    #  changed_when: false
+    #  notify: Restart dhcpd system service
 
     - name: Restart dhcpd system service
       ansible.builtin.systemd:
